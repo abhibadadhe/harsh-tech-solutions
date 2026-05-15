@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harsh Tech Solutions - Software & Web Development Company</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Modern typography similar to top-tier agencies -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Top Bar (Optional small top bar for contact info) -->
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <div class="top-bar-left">
+                <a href="mailto:abhibadadhe33@gmail.com"><i class="fa-regular fa-envelope"></i>
+                    abhibadadhe33@gmail.com</a>
+                <a href="tel:9028553395"><i class="fa-solid fa-phone"></i> +91 90285 53395</a>
+            </div>
+            <div class="top-bar-right">
+                <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation -->
+    <header class="navbar" id="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <a href="#">
+                    <img src="logo.png" alt="Harsh Tech Solutions Logo" class="site-logo">
+                    <span>Harsh Tech <span class="text-light">Solutions</span></span>
+                </a>
+            </div>
+
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+
+            <nav class="nav-links" id="nav-links">
+                <ul class="menu">
+                    <li><a href="#home" class="active">Home</a></li>
+                    <li class="has-dropdown">
+                        <a href="#services">Services <i class="fa-solid fa-chevron-down"></i></a>
+                        <ul class="dropdown">
+                            <li><a href="#" class="service-trigger" data-service="software">Custom Software</a></li>
+                            <li><a href="#" class="service-trigger" data-service="web">Web Development</a></li>
+                            <li><a href="#" class="service-trigger" data-service="billing">Billing Systems</a></li>
+                            <li><a href="#" class="service-trigger" data-service="whatsapp">WhatsApp Automation</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#approach">Our Approach</a></li>
+                    <li><a href="#" class="service-trigger" data-service="about">About Us</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <a href="#contact" class="btn btn-primary">Let's Talk <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="container hero-container">
+                <div class="hero-content reveal-left">
+                    <div class="badge">Innovation & Impact</div>
+                    <h1>Crafting <span class="text-gradient">Digital Excellence</span> for Growing Businesses</h1>
+                    <p class="hero-desc">We deliver advanced software and web solutions that drive business
+                        transformation. Streamline your operations, manage better, and grow faster with our custom-built
+                        technologies.</p>
+                    <div class="hero-cta">
+                        <a href="#contact" class="btn btn-primary btn-lg">Explore Solutions</a>
+                        <a href="#services" class="btn btn-outline btn-lg"><i class="fa-solid fa-play"></i> Our
+                            Services</a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="h-stat">
+                            <div class="number-group"
+                                style="font-size: 2.5rem; font-weight: 700; color: var(--primary-color); display: flex; align-items: center; gap: 2px;">
+                                <span class="number counter" data-target="100">0</span><span>+</span>
+                            </div>
+                            <span class="text">Projects Delivered</span>
+                        </div>
+                        <div class="h-stat">
+                            <div class="number-group"
+                                style="font-size: 2.5rem; font-weight: 700; color: var(--primary-color); display: flex; align-items: center; gap: 2px;">
+                                <span class="number counter" data-target="99">0</span><span>%</span>
+                            </div>
+                            <span class="text">Client Satisfaction</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-image-wrapper reveal-right">
+                    <div class="blob-shape"></div>
+                    <img src="laptop.png" alt="Technology Solutions" class="hero-img">
+                    <div class="floating-card card-1">
+                        <i class="fa-solid fa-rocket"></i>
+                        <div>
+                            <strong>Fast Deployment</strong>
+                            <span>Ready to scale</span>
+                        </div>
+                    </div>
+                    <div class="floating-card card-2">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <div>
+                            <strong>Secure Systems</strong>
+                            <span>Top tier safety</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="services section-padding bg-light">
+            <div class="container">
+                <div class="section-heading text-center reveal-up">
+                    <span class="subtitle">What We Do</span>
+                    <h2>Our Services Offerings</h2>
+                    <p>We provide comprehensive solutions tailored to modern business needs, helping you automate
+                        workflows and engage customers effectively.</p>
+                </div>
+
+                <div class="services-grid">
+                    <!-- Service 1 -->
+                    <div class="service-card reveal-up" style="transition-delay: 0.1s;">
+                        <div class="icon-box">
+                            <i class="fa-solid fa-file-invoice-dollar"></i>
+                        </div>
+                        <h3>Billing & Invoicing</h3>
+                        <p>Streamline your financial processes with easy billing, custom invoices, and automated
+                            reporting systems.</p>
+                        <a href="#" class="service-link service-trigger" data-service="billing">Learn more <i
+                                class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    <!-- Service 2 -->
+                    <div class="service-card reveal-up" style="transition-delay: 0.2s;">
+                        <div class="icon-box">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <h3>Customer Management</h3>
+                        <p>Robust CRM solutions to manage customer data, track appointments, and automate follow-ups
+                            effortlessly.</p>
+                        <a href="#" class="service-link service-trigger" data-service="crm">Learn more <i
+                                class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    <!-- Service 3 -->
+                    <div class="service-card reveal-up" style="transition-delay: 0.3s;">
+                        <div class="icon-box">
+                            <i class="fa-regular fa-calendar-check"></i>
+                        </div>
+                        <h3>Online Booking Systems</h3>
+                        <p>Enable seamless 24/7 self-service scheduling for your clients with our integrated online
+                            booking portals.</p>
+                        <a href="#" class="service-link service-trigger" data-service="booking">Learn more <i
+                                class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    <!-- Service 4 -->
+                    <div class="service-card reveal-up" style="transition-delay: 0.4s;">
+                        <div class="icon-box">
+                            <i class="fa-solid fa-box-open"></i>
+                        </div>
+                        <h3>Inventory Management</h3>
+                        <p>Real-time stock tracking and automated alerts ensure you never miss out on fulfilling
+                            customer demands.</p>
+                        <a href="#" class="service-link service-trigger" data-service="inventory">Learn more <i
+                                class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    <!-- Service 5 -->
+                    <div class="service-card reveal-up" style="transition-delay: 0.5s;">
+                        <div class="icon-box">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </div>
+                        <h3>WhatsApp Automation</h3>
+                        <p>Leverage the power of instant messaging with automated replies, booking confirmations, and
+                            engagement bots.</p>
+                        <a href="#" class="service-link service-trigger" data-service="whatsapp">Learn more <i
+                                class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    <!-- Service 6 -->
+                    <div class="service-card reveal-up" style="transition-delay: 0.6s;">
+                        <div class="icon-box">
+                            <i class="fa-solid fa-code"></i>
+                        </div>
+                        <h3>Custom Web Development</h3>
+                        <p>High-performance, beautifully designed custom websites and progressive web apps for your
+                            unique business.</p>
+                        <a href="#" class="service-link service-trigger" data-service="web">Learn more <i
+                                class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Development Approach Section -->
+        <section id="approach" class="approach section-padding">
+            <div class="container">
+                <div class="section-heading text-center reveal-up">
+                    <span class="subtitle">How We Work</span>
+                    <h2>Our Development Approach</h2>
+                    <p>A proven, systematic process to turn your ideas into a fully functional, high-quality reality.
+                    </p>
+                </div>
+
+                <div class="timeline">
+                    <!-- Step 1 -->
+                    <div class="timeline-item reveal-left">
+                        <div class="timeline-icon">01</div>
+                        <div class="timeline-content">
+                            <h3>Strategy & Planning</h3>
+                            <p>We start with deep requirement gathering, defining functional and technical
+                                specifications in collaboration with your team.</p>
+                        </div>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="timeline-item reveal-right">
+                        <div class="timeline-icon">02</div>
+                        <div class="timeline-content">
+                            <h3>Design & Prototyping</h3>
+                            <p>Crafting the user journey. We develop color schemes, layouts, and interactive prototypes
+                                to bring your brand to life.</p>
+                        </div>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="timeline-item reveal-left">
+                        <div class="timeline-icon">03</div>
+                        <div class="timeline-content">
+                            <h3>Development</h3>
+                            <p>Our engineers build your solution using modern tech stacks. You get access to a staging
+                                server to watch the progress live.</p>
+                        </div>
+                    </div>
+                    <!-- Step 4 -->
+                    <div class="timeline-item reveal-right">
+                        <div class="timeline-icon">04</div>
+                        <div class="timeline-content">
+                            <h3>Deployment</h3>
+                            <p>Ensuring smooth and seamless deployment to production with minimal downtime and maximum
+                                performance optimization.</p>
+                        </div>
+                    </div>
+                    <!-- Step 5 -->
+                    <div class="timeline-item reveal-left">
+                        <div class="timeline-icon">05</div>
+                        <div class="timeline-content">
+                            <h3>Support & Maintenance</h3>
+                            <p>Going live is just the beginning. We stand by your side providing ongoing technical
+                                support and future enhancements.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action Banner -->
+        <section class="cta-banner reveal-up">
+            <div class="container">
+                <div class="cta-content">
+                    <h2>Are you ready to transform your business?</h2>
+                    <p>Let's build your success together with smart, scalable solutions.</p>
+                </div>
+                <div class="cta-button">
+                    <a href="#contact" class="btn btn-light btn-lg">Get Free Consultation</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Connect / Contact Section -->
+        <section id="contact" class="contact section-padding bg-light">
+            <div class="container">
+                <div class="contact-wrapper">
+                    <div class="contact-info-block reveal-left">
+                        <span class="subtitle">Reach out now!</span>
+                        <h2>Let's discuss your next big project.</h2>
+                        <p class="mb-4">We are always ready to help you with your digital transformation journey.
+                            Connect with us directly.</p>
+
+                        <div class="contact-methods">
+                            <div class="method-item">
+                                <div class="icon"><i class="fa-solid fa-phone-volume"></i></div>
+                                <div>
+                                    <span class="label">Call Us Directly</span>
+                                    <a href="tel:9028553395" class="value">+91 90285 53395</a>
+                                </div>
+                            </div>
+                            <div class="method-item">
+                                <div class="icon"><i class="fa-solid fa-envelope-open-text"></i></div>
+                                <div>
+                                    <span class="label">Email Address</span>
+                                    <a href="mailto:abhibadadhe33@gmail.com" class="value">abhibadadhe33@gmail.com</a>
+                                </div>
+                            </div>
+                            <div class="method-item">
+                                <div class="icon"><i class="fa-solid fa-location-dot"></i></div>
+                                <div>
+                                    <span class="label">Office Location</span>
+                                    <span class="value">Baner, Pune, Maharashtra, India</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="founder-card mt-4">
+                            <div class="founder-avatar">
+                                <i class="fa-solid fa-user-tie"></i>
+                            </div>
+                            <div>
+                                <h4>Abhishek Badadhe</h4>
+                                <span>Founder, Harsh Tech Solutions</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contact-form-block reveal-right">
+                        <form class="contact-form" id="contactForm">
+                            <h3>Send us a message</h3>
+                            <div class="form-group">
+                                <input type="text" id="contactName" placeholder="Your Name" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" id="contactEmail" placeholder="Your Email" required>
+                            </div>
+                            <div class="form-group">
+                                <select id="contactSubject" required>
+                                    <option value="" disabled selected>Select Service</option>
+                                    <option value="Custom Software">Custom Software</option>
+                                    <option value="Web Development">Web Development</option>
+                                    <option value="WhatsApp Automation">WhatsApp Automation</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <textarea id="contactMessage" rows="4" placeholder="Tell us about your project"
+                                    required></textarea>
+                            </div>
+                            <button type="submit" id="contactSubmitBtn" class="btn btn-primary btn-block">Submit Inquiry
+                                <i class="fa-solid fa-paper-plane"></i></button>
+                            <div id="contactStatus"
+                                style="margin-top: 1rem; text-align: center; font-weight: 500; display: none; padding: 10px; border-radius: 8px;">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Mega Footer -->
+    <footer class="site-footer">
+        <div class="footer-top section-padding">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-widget brand-widget">
+                        <div class="logo footer-logo">
+                            <a href="#">
+                                <img src="logo.png" alt="Harsh Tech Solutions Logo" class="site-logo">
+                                <span>Harsh Tech Solutions</span>
+                            </a>
+                        </div>
+
+                        <p>Empowering businesses with cutting-edge software and web solutions. We bring ideas to life
+                            through innovation and robust technology.</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="footer-widget">
+                        <h3>Our Services</h3>
+                        <ul class="footer-links">
+                            <li><a href="#" class="service-trigger" data-service="billing"><i
+                                        class="fa-solid fa-angle-right"></i> Billing & Invoicing</a></li>
+                            <li><a href="#" class="service-trigger" data-service="crm"><i
+                                        class="fa-solid fa-angle-right"></i> Customer Management</a></li>
+                            <li><a href="#" class="service-trigger" data-service="booking"><i
+                                        class="fa-solid fa-angle-right"></i> Booking Systems</a></li>
+                            <li><a href="#" class="service-trigger" data-service="inventory"><i
+                                        class="fa-solid fa-angle-right"></i> Inventory Management</a></li>
+                            <li><a href="#" class="service-trigger" data-service="whatsapp"><i
+                                        class="fa-solid fa-angle-right"></i> WhatsApp Automation</a></li>
+                            <li><a href="#" class="service-trigger" data-service="web"><i
+                                        class="fa-solid fa-angle-right"></i> Web Development</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-widget">
+                        <h3>Company</h3>
+                        <ul class="footer-links">
+                            <li><a href="#" class="service-trigger" data-service="about"><i
+                                        class="fa-solid fa-angle-right"></i> About Us</a></li>
+                            <li><a href="#approach"><i class="fa-solid fa-angle-right"></i> Our Approach</a></li>
+                            <li><a href="#" class="service-trigger" data-service="careers"><i
+                                        class="fa-solid fa-angle-right"></i> Careers</a></li>
+                            <li><a href="#" class="service-trigger" data-service="privacy"><i
+                                        class="fa-solid fa-angle-right"></i> Privacy Policy</a></li>
+                            <li><a href="#" class="service-trigger" data-service="terms"><i
+                                        class="fa-solid fa-angle-right"></i> Terms of Service</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-widget">
+                        <h3>Ready to Innovate?</h3>
+                        <div class="availability-badge">
+                            <span class="pulse-dot"></span> Available for new projects
+                        </div>
+                        <p class="mt-3" style="color: var(--text-muted); font-size: 0.9rem;">Have a vision? Let's build
+                            it together using modern technology.</p>
+                        <div class="tech-stack-mini mt-3">
+                            <i class="fa-brands fa-react" title="React"></i>
+                            <i class="fa-brands fa-node-js" title="Node.js"></i>
+                            <i class="fa-brands fa-python" title="Python"></i>
+                            <i class="fa-brands fa-aws" title="AWS"></i>
+                            <i class="fa-brands fa-android" title="Android"></i>
+                        </div>
+                        <a href="#contact" class="btn btn-outline mt-4"
+                            style="border-color: rgba(255,255,255,0.2); color: white; padding: 0.5rem 1.5rem; display: inline-block;">Start
+                            a Project</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="footer-bottom-inner">
+                    <p>&copy; 2026 Harsh Tech Solutions. All rights reserved.</p>
+                    <p>Designed with <i class="fa-solid fa-heart" style="color: var(--primary-color);"></i> for Business
+                        Growth</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Service Modal -->
+    <div id="service-modal" class="modal-overlay">
+        <div class="modal-container">
+            <button class="modal-close" id="modal-close"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-content" id="modal-content">
+                <!-- Content injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

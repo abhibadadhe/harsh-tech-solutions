@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harsh Tech Solutions - Admin Dashboard</title>
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-dark: #3730a3;
+            --secondary-color: #0ea5e9;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --bg-main: #f1f5f9;
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: #020617;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            position: fixed;
+            height: 100vh;
+        }
+
+        .sidebar-logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            color: #cbd5e1;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 2rem 3rem;
+            display: none;
+            /* Hidden until logged in */
+        }
+
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .top-header h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2rem;
+        }
+
+        /* Metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .metric-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .metric-card.total .metric-icon {
+            background: #e0e7ff;
+            color: var(--primary-color);
+        }
+
+        .metric-card.pending .metric-icon {
+            background: #fef3c7;
+            color: var(--warning);
+        }
+
+        .metric-card.resolved .metric-icon {
+            background: #d1fae5;
+            color: var(--success);
+        }
+
+        .metric-info h3 {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .metric-info p {
+            font-size: 1.75rem;
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Table */
+        .table-container {
+            background: var(--bg-card);
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th,
+        td {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: #f8fafc;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            font-size: 0.875rem;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: #f8fafc;
+        }
+
+        /* Badges & Toggles */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge.pending {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+
+        .badge.contacted {
+            background-color: #d1fae5;
+            color: #059669;
+        }
+
+        /* Custom Checkbox */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e1;
+            transition: .3s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: var(--success);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(20px);
+        }
+
+        /* Buttons & Auth */
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        #auth-screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100vw;
+            height: 100vh;
+            background: var(--bg-main);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+
+        .auth-card {
+            background: white;
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .auth-card h2 {
+            font-family: 'Outfit', sans-serif;
+            margin-bottom: 1.5rem;
+        }
+
+        .auth-card input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+
+        .auth-card .btn {
+            width: 100%;
+            padding: 0.75rem;
+        }
+
+        .error-msg {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 99;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Auth Screen -->
+    <div id="auth-screen">
+        <div class="auth-card">
+            <div class="sidebar-logo" style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 2.5rem; color: var(--text-main);">
+                <img src="logo.png" alt="Harsh Tech Solutions" style="height: 60px; transform: scale(1.2);">
+                <span style="font-size: 1.75rem; font-weight: 800; white-space: nowrap;">Harsh Tech</span>
+            </div>
+            <h2>Admin Login</h2>
+            <input type="password" id="adminPassword" placeholder="Enter password">
+            <button id="loginBtn" class="btn">Login</button>
+            <div id="authError" class="error-msg">Incorrect password.</div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="app-wrapper" style="display: none; width: 100%;">
+        <aside class="sidebar">
+            <div class="sidebar-logo" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 3rem;">
+                <img src="logo.png" alt="Harsh Tech Solutions" style="height: 45px; transform: scale(1.3); transform-origin: left center; filter: brightness(0) invert(1);">
+                <span style="font-size: 1.5rem; font-weight: 800; white-space: nowrap;">Harsh Tech</span>
+            </div>
+            <nav>
+                <a href="#" class="nav-item active"><i class="fa-solid fa-table-columns"></i> Dashboard</a>
+                <!-- <a href="#" class="nav-item"><i class="fa-solid fa-users"></i> Clients</a>
+                <a href="#" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a> -->
+            </nav>
+            <div style="margin-top: auto;">
+                <button id="logoutBtn" class="btn" style="background: rgba(255,255,255,0.1); width: 100%;">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content" id="main-content">
+            <div class="top-header">
+                <div>
+                    <h1>Inquiries Overview</h1>
+                    <p style="color: var(--text-muted);">Manage and track client contact requests.</p>
+                </div>
+                <button class="btn" onclick="fetchData()"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card total">
+                    <div class="metric-icon"><i class="fa-solid fa-inbox"></i></div>
+                    <div class="metric-info">
+                        <h3>Total Inquiries</h3>
+                        <p id="metric-total">0</p>
+                    </div>
+                </div>
+                <div class="metric-card pending">
+                    <div class="metric-icon"><i class="fa-solid fa-clock"></i></div>
+                    <div class="metric-info">
+                        <h3>Pending Contact</h3>
+                        <p id="metric-pending">0</p>
+                    </div>
+                </div>
+                <div class="metric-card resolved">
+                    <div class="metric-icon"><i class="fa-solid fa-check-double"></i></div>
+                    <div class="metric-info">
+                        <h3>Contacted</h3>
+                        <p id="metric-contacted">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Client Info</th>
+                            <th>Service Needed</th>
+                            <th>Message</th>
+                            <th>Status</th>
+                            <th>Mark Done</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Data injected here -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <i class="fa-solid fa-spinner fa-spin" style="font-size: 3rem; color: var(--primary-color);"></i>
+    </div>
+
+    <script>
+        const authScreen = document.getElementById('auth-screen');
+        const appWrapper = document.getElementById('app-wrapper');
+        const mainContent = document.getElementById('main-content');
+        const loginBtn = document.getElementById('loginBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const passwordInput = document.getElementById('adminPassword');
+        const authError = document.getElementById('authError');
+        const tableBody = document.getElementById('tableBody');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+
+        let authToken = '';
+
+        loginBtn.addEventListener('click', async () => {
+            const pwd = passwordInput.value;
+            if (!pwd) return;
+
+            loginBtn.innerHTML = 'Verifying...';
+            authError.style.display = 'none';
+
+            try {
+                authToken = `Bearer ${pwd}`;
+                await fetchData();
+
+                authScreen.style.display = 'none';
+                appWrapper.style.display = 'flex';
+                mainContent.style.display = 'block';
+            } catch (e) {
+                console.error(e);
+                authError.innerText = 'Incorrect password or server is down.';
+                authError.style.display = 'block';
+                loginBtn.innerHTML = 'Login';
+                authToken = '';
+            }
+        });
+
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') loginBtn.click();
+        });
+
+        logoutBtn.addEventListener('click', () => {
+            authToken = '';
+            passwordInput.value = '';
+            appWrapper.style.display = 'none';
+            mainContent.style.display = 'none';
+            authScreen.style.display = 'flex';
+            loginBtn.innerHTML = 'Login';
+        });
+
+        async function fetchData() {
+            loadingOverlay.style.display = 'flex';
+            try {
+                const res = await fetch('/api/admin/contacts', {
+                    headers: { 'Authorization': authToken }
+                });
+
+                if (!res.ok) throw new Error('Unauthorized');
+
+                const data = await res.json();
+                renderDashboard(data);
+            } finally {
+                loadingOverlay.style.display = 'none';
+            }
+        }
+
+        async function toggleStatus(id, currentStatus) {
+            loadingOverlay.style.display = 'flex';
+            try {
+                const res = await fetch(`/api/admin/contacts/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': authToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ is_contacted: !currentStatus })
+                });
+
+                if (!res.ok) throw new Error('Update failed');
+
+                // Refresh data to update UI
+                await fetchData();
+            } catch (e) {
+                alert('Failed to update status.');
+            } finally {
+                loadingOverlay.style.display = 'none';
+            }
+        }
+
+        function renderDashboard(data) {
+            // Calculate Metrics
+            const total = data.length;
+            const contacted = data.filter(r => r.is_contacted).length;
+            const pending = total - contacted;
+
+            document.getElementById('metric-total').innerText = total;
+            document.getElementById('metric-pending').innerText = pending;
+            document.getElementById('metric-contacted').innerText = contacted;
+
+            if (data.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 3rem; color: var(--text-muted);">No inquiries found.</td></tr>';
+                return;
+            }
+
+            tableBody.innerHTML = data.map(row => {
+                const date = new Date(row.created_at).toLocaleDateString('en-US', {
+                    month: 'short', day: 'numeric', year: 'numeric'
+                });
+                const isChecked = row.is_contacted ? 'checked' : '';
+                const badgeHtml = row.is_contacted
+                    ? `<span class="badge contacted"><i class="fa-solid fa-check"></i> Contacted</span>`
+                    : `<span class="badge pending"><i class="fa-solid fa-clock"></i> Pending</span>`;
+
+                return `
+                    <tr>
+                        <td style="color: var(--text-muted);">${date}</td>
+                        <td>
+                            <strong>${row.name}</strong><br>
+                            <a href="mailto:${row.email}" style="color: var(--primary-color); text-decoration: none; font-size: 0.75rem;">${row.email}</a>
+                            <i class="fa-regular fa-copy" style="color: var(--text-muted); cursor: pointer; font-size: 0.75rem; margin-left: 0.25rem;" onclick="copyEmail('${row.email}')" title="Copy Email"></i>
+                        </td>
+                        <td><span style="background: #f1f5f9; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 500;">${row.subject || 'Other'}</span></td>
+                        <td style="max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${row.message}">
+                            ${row.message}
+                        </td>
+                        <td>${badgeHtml}</td>
+                        <td>
+                            <label class="toggle-switch">
+                                <input type="checkbox" ${isChecked} onchange="toggleStatus(${row.id}, ${row.is_contacted})">
+                                <span class="slider"></span>
+                            </label>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function copyEmail(email) {
+            navigator.clipboard.writeText(email).then(() => {
+                alert('Email copied to clipboard: ' + email);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
+    </script>
+</body>
+
+</html>
