@@ -13,42 +13,87 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Mobile Menu Toggle
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('nav-links');
-    
-    hamburger.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-        
-        // Animate hamburger to X (optional simple animation)
+    const navBackdrop = document.getElementById('nav-backdrop');
+
+    const setBodyScroll = (disabled) => {
+        document.body.classList.toggle('nav-open', disabled);
+    };
+
+    const closeMenu = () => {
+        navLinks.classList.remove('active');
+        if (navBackdrop) {
+            navBackdrop.classList.remove('active');
+        }
+        setBodyScroll(false);
         const bars = hamburger.querySelectorAll('.bar');
+        bars[0].style.transform = 'none';
+        bars[1].style.opacity = '1';
+        bars[2].style.transform = 'none';
+    };
+
+    const openMenu = () => {
+        navLinks.classList.add('active');
+        if (navBackdrop) {
+            navBackdrop.classList.add('active');
+        }
+        setBodyScroll(true);
+        const bars = hamburger.querySelectorAll('.bar');
+        bars[0].style.transform = 'translateY(8px) rotate(45deg)';
+        bars[1].style.opacity = '0';
+        bars[2].style.transform = 'translateY(-8px) rotate(-45deg)';
+    };
+
+    hamburger.addEventListener('click', () => {
         if (navLinks.classList.contains('active')) {
-            bars[0].style.transform = 'translateY(8px) rotate(45deg)';
-            bars[1].style.opacity = '0';
-            bars[2].style.transform = 'translateY(-8px) rotate(-45deg)';
+            closeMenu();
         } else {
-            bars[0].style.transform = 'none';
-            bars[1].style.opacity = '1';
-            bars[2].style.transform = 'none';
+            openMenu();
         }
     });
+
+    if (navBackdrop) {
+        navBackdrop.addEventListener('click', closeMenu);
+    }
 
     // Close mobile menu when clicking outside or on a link
     document.addEventListener('click', (e) => {
         if (!hamburger.contains(e.target) && !navLinks.contains(e.target) && navLinks.classList.contains('active')) {
-            navLinks.classList.remove('active');
-            const bars = hamburger.querySelectorAll('.bar');
-            bars[0].style.transform = 'none';
-            bars[1].style.opacity = '1';
-            bars[2].style.transform = 'none';
+            closeMenu();
         }
+    });
+
+    const mobileNavLinks = navLinks.querySelectorAll('a');
+    mobileNavLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            if (window.innerWidth <= 768 && navLinks.classList.contains('active')) {
+                closeMenu();
+            }
+        });
     });
 
     // 3. Mobile Dropdown Toggle
     const hasDropdown = document.querySelector('.has-dropdown');
-    if (window.innerWidth <= 768) {
-        hasDropdown.addEventListener('click', (e) => {
+    const toggleDropdown = (e) => {
+        if (window.innerWidth <= 768) {
             e.preventDefault();
             hasDropdown.classList.toggle('active');
-        });
+        }
+    };
+
+    if (hasDropdown) {
+        hasDropdown.addEventListener('click', toggleDropdown);
     }
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) {
+            if (navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+            }
+            if (hasDropdown && hasDropdown.classList.contains('active')) {
+                hasDropdown.classList.remove('active');
+            }
+        }
+    });
 
     // 4. Scroll Reveal Animations
     const observerOptions = {

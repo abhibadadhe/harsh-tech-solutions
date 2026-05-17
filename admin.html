@@ -283,6 +283,10 @@
             transition: all 0.2s;
         }
 
+        .sidebar-toggle {
+            display: none;
+        }
+
         .btn:hover {
             background-color: var(--primary-dark);
         }
@@ -347,6 +351,100 @@
             justify-content: center;
             z-index: 99;
         }
+
+        @media (max-width: 1024px) {
+            .sidebar-toggle {
+                display: inline-flex;
+            }
+
+            .top-header-actions {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                max-width: 100%;
+                transform: translateY(-100%);
+                transition: transform 0.25s ease;
+                z-index: 100;
+                border-radius: 0 0 24px 24px;
+                max-height: calc(100vh - 1rem);
+                overflow-y: auto;
+            }
+
+            .sidebar.open {
+                transform: translateY(0);
+            }
+
+            .sidebar-backdrop {
+                display: block;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.35);
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.25s ease;
+                z-index: 90;
+                pointer-events: none;
+            }
+
+            .sidebar-backdrop.active {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1.5rem;
+            }
+
+            .top-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .metrics-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+
+            .table-container {
+                overflow-x: auto;
+            }
+
+            table {
+                min-width: 760px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                padding: 1rem;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .top-header h1 {
+                font-size: 1.5rem;
+            }
+
+            th,
+            td {
+                padding: 0.85rem 0.9rem;
+            }
+        }
     </style>
 </head>
 
@@ -368,7 +466,7 @@
 
     <!-- Dashboard -->
     <div id="app-wrapper" style="display: none; width: 100%;">
-        <aside class="sidebar">
+        <aside class="sidebar" id="sidebar">
             <div class="sidebar-logo" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 3rem;">
                 <img src="logo.png" alt="Harsh Tech Solutions" style="height: 45px; transform: scale(1.3); transform-origin: left center; filter: brightness(0) invert(1);">
                 <span style="font-size: 1.5rem; font-weight: 800; white-space: nowrap;">Harsh Tech</span>
@@ -384,6 +482,7 @@
                 </button>
             </div>
         </aside>
+        <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
         <main class="main-content" id="main-content">
             <div class="top-header">
@@ -391,7 +490,10 @@
                     <h1>Inquiries Overview</h1>
                     <p style="color: var(--text-muted);">Manage and track client contact requests.</p>
                 </div>
-                <button class="btn" onclick="fetchData()"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+                <div class="top-header-actions">
+                    <button class="btn sidebar-toggle" id="sidebarToggle"><i class="fa-solid fa-bars"></i> Menu</button>
+                    <button class="btn" onclick="fetchData()"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+                </div>
             </div>
 
             <div class="metrics-grid">
@@ -422,6 +524,7 @@
                 <table id="dataTable">
                     <thead>
                         <tr>
+                            <th>#</th>
                             <th>Date</th>
                             <th>Client Info</th>
                             <th>Service Needed</th>
@@ -452,8 +555,32 @@
         const authError = document.getElementById('authError');
         const tableBody = document.getElementById('tableBody');
         const loadingOverlay = document.getElementById('loadingOverlay');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarBackdrop = document.getElementById('sidebarBackdrop');
 
         let authToken = '';
+
+        if (sidebarToggle && sidebar && sidebarBackdrop) {
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+                sidebarBackdrop.classList.toggle('active');
+            });
+
+            sidebarBackdrop.addEventListener('click', () => {
+                sidebar.classList.remove('open');
+                sidebarBackdrop.classList.remove('active');
+            });
+
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    if (window.innerWidth <= 1024) {
+                        sidebar.classList.remove('open');
+                        sidebarBackdrop.classList.remove('active');
+                    }
+                });
+            });
+        }
 
         loginBtn.addEventListener('click', async () => {
             const pwd = passwordInput.value;
@@ -541,11 +668,11 @@
             document.getElementById('metric-contacted').innerText = contacted;
 
             if (data.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 3rem; color: var(--text-muted);">No inquiries found.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 3rem; color: var(--text-muted);">No inquiries found.</td></tr>';
                 return;
             }
 
-            tableBody.innerHTML = data.map(row => {
+            tableBody.innerHTML = data.map((row, index) => {
                 const date = new Date(row.created_at).toLocaleDateString('en-US', {
                     month: 'short', day: 'numeric', year: 'numeric'
                 });
@@ -556,6 +683,7 @@
 
                 return `
                     <tr>
+                        <td style="font-weight: 700; color: var(--text-muted);">${index + 1}</td>
                         <td style="color: var(--text-muted);">${date}</td>
                         <td>
     <strong>${row.name}</strong><br>
