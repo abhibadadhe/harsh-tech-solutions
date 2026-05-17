@@ -1533,7 +1533,6 @@ img {
         position: fixed;
         top: 0;
         left: 0;
-        right: -100%;
         width: 100%;
         max-width: none;
         height: 100vh;
@@ -1541,14 +1540,16 @@ img {
         flex-direction: column;
         justify-content: flex-start;
         box-shadow: var(--shadow-2xl);
-        transition: right 0.3s ease;
+        transition: transform 0.28s cubic-bezier(.2,.9,.3,1);
         padding: 3rem 1.5rem 2rem;
-        z-index: 1002;
+        z-index: 10051; /* above other fixed UI like whatsapp */
         overflow-y: auto;
+        transform: translateX(100%); /* hidden by default */
+        will-change: transform;
     }
 
     .nav-links.active {
-        right: 0;
+        transform: translateX(0); /* slide in when active */
     }
 
     .nav-backdrop {
@@ -1558,7 +1559,7 @@ img {
         opacity: 0;
         visibility: hidden;
         transition: opacity 0.3s ease;
-        z-index: 1001;
+        z-index: 10050; /* ensure backdrop sits above other fixed elements */
         pointer-events: none;
     }
 

@@ -62,37 +62,84 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    const mobileNavLinks = navLinks.querySelectorAll('a');
-    mobileNavLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            if (window.innerWidth <= 768 && navLinks.classList.contains('active')) {
-                closeMenu();
+    if (navLinks) {
+        const mobileNavLinks = navLinks.querySelectorAll('a');
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                // If this link is the parent dropdown toggle on mobile, don't close here
+                const parentHas = link.closest('.has-dropdown');
+                if (window.innerWidth <= 768 && parentHas && parentHas.querySelector(':scope > a') === link) {
+                    // let the parent toggle handler manage open/close
+                    return;
+                }
+
+                // Close the mobile nav when any other link is clicked while menu is open.
+                if (navLinks.classList.contains('active')) {
+                    closeMenu();
+                }
+            });
+        });
+    }
+
+    // Allow closing the mobile nav with the Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && navLinks && navLinks.classList.contains('active')) {
+            closeMenu();
+        }
+    });
+
+    // 3. Mobile Dropdown Toggle — attach to parent link only so child clicks don't re-toggle
+    const dropdownParents = document.querySelectorAll('.has-dropdown');
+    dropdownParents.forEach(parent => {
+        const parentLink = parent.querySelector(':scope > a');
+        if (!parentLink) return;
+        parentLink.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768) {
+                e.preventDefault();
+                e.stopPropagation();
+                parent.classList.toggle('active');
             }
         });
     });
-
-    // 3. Mobile Dropdown Toggle
-    const hasDropdown = document.querySelector('.has-dropdown');
-    const toggleDropdown = (e) => {
-        if (window.innerWidth <= 768) {
-            e.preventDefault();
-            hasDropdown.classList.toggle('active');
-        }
-    };
-
-    if (hasDropdown) {
-        hasDropdown.addEventListener('click', toggleDropdown);
-    }
 
     window.addEventListener('resize', () => {
         if (window.innerWidth > 768) {
             if (navLinks.classList.contains('active')) {
                 navLinks.classList.remove('active');
             }
-            if (hasDropdown && hasDropdown.classList.contains('active')) {
-                hasDropdown.classList.remove('active');
-            }
+            // remove active from all dropdown parents when leaving mobile
+            const dropdownParents = document.querySelectorAll('.has-dropdown');
+            dropdownParents.forEach(p => p.classList.remove('active'));
         }
+    });
+
+    // Ensure nav is closed on initial load and when resizing into mobile
+    const initNavState = () => {
+        try {
+            if (navLinks && navLinks.classList.contains('active')) navLinks.classList.remove('active');
+            if (navBackdrop && navBackdrop.classList.contains('active')) navBackdrop.classList.remove('active');
+            document.body.classList.remove('nav-open');
+            if (hamburger) {
+                const bars = hamburger.querySelectorAll('.bar');
+                if (bars && bars.length >= 3) {
+                    bars[0].style.transform = 'none';
+                    bars[1].style.opacity = '1';
+                    bars[2].style.transform = 'none';
+                }
+            }
+        } catch (err) {
+            // silent
+        }
+    };
+
+    // Run on load and when crossing mobile breakpoint
+    initNavState();
+    let lastWidth = window.innerWidth;
+    window.addEventListener('resize', () => {
+        if ((lastWidth > 768 && window.innerWidth <= 768) || (lastWidth <= 768 && window.innerWidth > 768)) {
+            initNavState();
+        }
+        lastWidth = window.innerWidth;
     });
 
     // 4. Scroll Reveal Animations
@@ -298,6 +345,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('modal-cta').addEventListener('click', () => {
                     closeModal();
                 });
+
+                // Ensure mobile nav is closed when opening a service modal
+                if (typeof closeMenu === 'function') closeMenu();
 
                 modalOverlay.classList.add('active');
                 document.body.style.overflow = 'hidden';
