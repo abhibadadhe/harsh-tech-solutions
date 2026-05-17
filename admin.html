@@ -558,10 +558,30 @@
                     <tr>
                         <td style="color: var(--text-muted);">${date}</td>
                         <td>
-                            <strong>${row.name}</strong><br>
-                            <a href="mailto:${row.email}" style="color: var(--primary-color); text-decoration: none; font-size: 0.75rem;">${row.email}</a>
-                            <i class="fa-regular fa-copy" style="color: var(--text-muted); cursor: pointer; font-size: 0.75rem; margin-left: 0.25rem;" onclick="copyEmail('${row.email}')" title="Copy Email"></i>
-                        </td>
+    <strong>${row.name}</strong><br>
+
+    <a href="mailto:${row.email}" 
+       style="color: var(--primary-color); text-decoration: none; font-size: 0.75rem;">
+       ${row.email}
+    </a>
+
+    <i class="fa-regular fa-copy" 
+       style="color: var(--text-muted); cursor: pointer; font-size: 0.75rem; margin-left: 0.25rem;" 
+       onclick="copyEmail('${row.email}')" 
+       title="Copy Email"></i>
+
+    <br>
+
+    <a href="tel:${row.phone}" 
+       style="color: var(--success); text-decoration: none; font-size: 0.75rem;">
+       ${row.phone}
+    </a>
+
+    <i class="fa-regular fa-copy" 
+       style="color: var(--text-muted); cursor: pointer; font-size: 0.75rem; margin-left: 0.25rem;" 
+       onclick="copyPhone('${row.phone}')" 
+       title="Copy Phone"></i>
+</td>
                         <td><span style="background: #f1f5f9; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 500;">${row.subject || 'Other'}</span></td>
                         <td style="max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${row.message}">
                             ${row.message}
@@ -585,6 +605,13 @@
                 console.error('Failed to copy: ', err);
             });
         }
+        function copyPhone(phone) {
+    navigator.clipboard.writeText(phone).then(() => {
+        alert('Phone number copied: ' + phone);
+    }).catch(err => {
+        console.error('Failed to copy: ', err);
+    });
+}
     </script>
 </body>
 
