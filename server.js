@@ -57,6 +57,15 @@ pool.connect((err) => {
                 pool.query("ALTER TABLE contacts ADD COLUMN IF NOT EXISTS phone VARCHAR(50) NOT NULL DEFAULT ''", () => {});
                 pool.query("ALTER TABLE contacts ADD COLUMN IF NOT EXISTS is_contacted BOOLEAN DEFAULT FALSE", () => {});
             }
+            pool.query(`
+CREATE INDEX IF NOT EXISTS idx_contacts_created_at 
+ON contacts(created_at DESC)
+`);
+
+pool.query(`
+CREATE INDEX IF NOT EXISTS idx_contacts_is_contacted 
+ON contacts(is_contacted)
+`);
         });
     }
 });
