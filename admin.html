@@ -95,8 +95,10 @@
 
         .top-header {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
             margin-bottom: 2rem;
         }
 
@@ -502,13 +504,13 @@
 
         <main class="main-content" id="main-content">
             <div class="top-header">
-                <div>
-                    <h1>Inquiries Overview</h1>
-                    <p style="color: var(--text-muted);">Manage and track client contact requests.</p>
-                </div>
                 <div class="top-header-actions">
                     <button class="btn sidebar-toggle" id="sidebarToggle"><i class="fa-solid fa-bars"></i> Menu</button>
                     <button class="btn" onclick="fetchData()"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+                </div>
+                <div>
+                    <h1>Inquiries Overview</h1>
+                    <p style="color: var(--text-muted);">Manage and track client contact requests.</p>
                 </div>
             </div>
 
