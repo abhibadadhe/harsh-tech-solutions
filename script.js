@@ -146,6 +146,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Customer support ticketing'
             ]
         },
+        'hosting': {
+            title: 'Hosting, SSL & Deployment',
+            description: 'Secure and optimized hosting with HTTPS, deployment automation, and reliable uptime for customer-facing sites.',
+            features: [
+                'SSL certificate setup',
+                'Fast CDN-backed hosting',
+                'Automated deployment workflows',
+                'Performance monitoring'
+            ]
+        },
+        'design': {
+            title: 'UI/UX & Product Design',
+            description: 'Effective user interfaces and product experiences that increase engagement and conversion rates.',
+            features: [
+                'User research and wireframes',
+                'High-fidelity UI design',
+                'Mobile-first experience',
+                'Conversion-focused interactions'
+            ]
+        },
         'web': {
             title: 'Website & App Development',
             description: 'We build high-performance, responsive websites and mobile applications tailored to your brand.',
@@ -168,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         'about': {
             title: 'About Harsh Tech Solutions',
-            description: 'We are a premier technology agency dedicated to transforming businesses through innovative digital solutions. With years of experience, our team of experts delivers excellence in every project.',
+            description: 'Harsh Tech Solutions is a technology-driven company focused on delivering innovative digital solutions including web development, software applications, AI-powered systems, and IT services. We help businesses build a strong digital presence with reliable and scalable technology solutions.',
             features: [
                 'Expert team of developers and designers',
                 'Client-centric approach to problem solving',
@@ -330,6 +350,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const formData = {
                 name: document.getElementById('contactName').value,
                 email: document.getElementById('contactEmail').value,
+                phone: document.getElementById('contactPhone').value,
                 subject: document.getElementById('contactSubject').value,
                 message: document.getElementById('contactMessage').value
             };

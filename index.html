@@ -4,8 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Harsh Tech Solutions - Software & Web Development Company</title>
+    <title>Harsh Tech Solutions | Web, Software, UI/UX, Hosting & SEO</title>
+    <meta name="description" content="Harsh Tech Solutions delivers custom web development, software, WhatsApp automation, UI/UX design, hosting, SSL, and SEO solutions for growing businesses.">
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Harsh Tech Solutions | Digital Growth & Lead Generation">
+    <meta property="og:description" content="Custom software, websites, WhatsApp automation, hosting, SSL, and SEO to grow your business online.">
+    <meta property="og:image" content="logo.png">
+    <meta property="og:type" content="website">
     <link rel="icon" href="logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Modern typography similar to top-tier agencies -->
@@ -21,7 +31,7 @@
             <div class="top-bar-left">
                 <div style="display: inline-flex; align-items: center; gap: 0.5rem;">
                     <a href="mailto:abhibadadhe@harshtechsolutions.in"><i class="fa-regular fa-envelope"></i> abhibadadhe@harshtechsolutions.in</a>
-                    <i class="fa-regular fa-copy" style="cursor: pointer; font-size: 0.85rem;" onclick="copyEmailGlobal('abhibadadhe@harshtechsolutions.in')" title="Copy Email"></i>
+                    <!-- <i class="fa-regular fa-copy" style="cursor: pointer; font-size: 0.85rem;" onclick="copyEmailGlobal('abhibadadhe@harshtechsolutions.in')" title="Copy Email"></i> -->
                 </div>
                 <a href="tel:9028553395"><i class="fa-solid fa-phone"></i> +91 90285 53395</a>
             </div>
@@ -38,7 +48,7 @@
         <div class="container nav-container">
             <div class="logo">
                 <a href="#">
-                    <img src="logo.png" alt="Harsh Tech Solutions Logo" class="site-logo">
+                    <img src="logo.png" alt="Harsh Tech Solutions Logo" class="site-logo" loading="lazy" decoding="async">
                     <span>Harsh Tech <span class="text-light">Solutions</span></span>
                 </a>
             </div>
@@ -52,6 +62,7 @@
             <nav class="nav-links" id="nav-links">
                 <ul class="menu">
                     <li><a href="#home" class="active">Home</a></li>
+                    <li><a href="#vision">Vision</a></li>
                     <li class="has-dropdown">
                         <a href="#services">Services <i class="fa-solid fa-chevron-down"></i></a>
                         <ul class="dropdown">
@@ -59,8 +70,11 @@
                             <li><a href="#" class="service-trigger" data-service="web">Web Development</a></li>
                             <li><a href="#" class="service-trigger" data-service="billing">Billing Systems</a></li>
                             <li><a href="#" class="service-trigger" data-service="whatsapp">WhatsApp Automation</a></li>
+                            <li><a href="#" class="service-trigger" data-service="design">UI/UX Design</a></li>
+                            <li><a href="#" class="service-trigger" data-service="hosting">Hosting & Deployment</a></li>
                         </ul>
                     </li>
+                    <li><a href="#portfolio">Portfolio</a></li>
                     <li><a href="#approach">Our Approach</a></li>
                     <li><a href="#" class="service-trigger" data-service="about">About Us</a></li>
                 </ul>
@@ -87,13 +101,13 @@
                             Services</a>
                     </div>
                     <div class="hero-stats">
-                        <div class="h-stat">
+                        <!-- <div class="h-stat">
                             <div class="number-group"
                                 style="font-size: 2.5rem; font-weight: 700; color: var(--primary-color); display: flex; align-items: center; gap: 2px;">
                                 <span class="number counter" data-target="100">0</span><span>+</span>
                             </div>
                             <span class="text">Projects Delivered</span>
-                        </div>
+                        </div> -->
                         <div class="h-stat">
                             <div class="number-group"
                                 style="font-size: 2.5rem; font-weight: 700; color: var(--primary-color); display: flex; align-items: center; gap: 2px;">
@@ -105,7 +119,7 @@
                 </div>
                 <div class="hero-image-wrapper reveal-right">
                     <div class="blob-shape"></div>
-                    <img src="laptop.png" alt="Technology Solutions" class="hero-img">
+                    <img src="laptop.png" alt="Technology Solutions" class="hero-img" loading="lazy" decoding="async">
                     <div class="floating-card card-1">
                         <i class="fa-solid fa-rocket"></i>
                         <div>
@@ -124,6 +138,68 @@
             </div>
         </section>
 
+        <!-- Company Stats -->
+        <section id="stats" class="stats section-padding">
+            <div class="container">
+                <div class="section-heading text-center reveal-up">
+                    <span class="subtitle">Trusted by Businesses</span>
+                    <h2>Numbers that show our focus</h2>
+                    <p>Professional delivery, technology expertise, and client-first service built into every project.</p>
+                </div>
+                <div class="stats-grid reveal-up">
+                    <div class="stat-card service-card">
+                        <div class="icon-box stat-icon"><i class="fa-solid fa-briefcase"></i></div>
+                        <h3><span class="number counter" data-target="50">0</span>+</h3>
+                        <p>Projects delivered with high performance and measurable growth.</p>
+                    </div>
+                    <div class="stat-card service-card">
+                        <div class="icon-box stat-icon"><i class="fa-solid fa-gears"></i></div>
+                        <h3><span class="number counter" data-target="20">0</span>+</h3>
+                        <p>Technologies mastered for full-stack development, automation, and modern integrations.</p>
+                    </div>
+                    <div class="stat-card service-card">
+                        <div class="icon-box stat-icon"><i class="fa-solid fa-headset"></i></div>
+                        <h3><span class="number counter" data-target="24">0</span>/7</h3>
+                        <p>Support available to keep your site, systems, and customer journeys running smoothly.</p>
+                    </div>
+                    <div class="stat-card service-card">
+                        <div class="icon-box stat-icon"><i class="fa-solid fa-thumbs-up"></i></div>
+                        <h3><span class="number counter" data-target="100">0</span>%</h3>
+                        <p>Client-focused delivery with every solution designed for usability, trust, and ROI.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Vision & Mission -->
+        <section id="vision" class="vision section-padding">
+            <div class="container">
+                <div class="section-heading text-center reveal-up">
+                    <span class="subtitle">Vision & Mission</span>
+                    <h2>Driving Growth with Clarity and Performance</h2>
+                    <p>We build digital products that feel modern, perform fast, and generate leads while reflecting your brand's core purpose.</p>
+                </div>
+
+                <div class="vision-grid">
+                    <div class="vision-card service-card reveal-up" style="transition-delay: 0.1s;">
+                        <div class="icon-box vision-icon"><i class="fa-solid fa-eye"></i></div>
+                        <h3>Our Vision</h3>
+                        <p>To be the trusted technology partner for businesses in India and beyond, delivering software, websites, and automation that create measurable growth.</p>
+                    </div>
+                    <div class="vision-card service-card reveal-up" style="transition-delay: 0.2s;">
+                        <div class="icon-box vision-icon"><i class="fa-solid fa-bullseye"></i></div>
+                        <h3>Our Mission</h3>
+                        <p>To simplify digital transformation through intelligent design, secure hosting, and search-friendly development that helps clients win more customers.</p>
+                    </div>
+                    <div class="vision-card service-card reveal-up" style="transition-delay: 0.3s;">
+                        <div class="icon-box vision-icon"><i class="fa-solid fa-handshake-angle"></i></div>
+                        <h3>Our Values</h3>
+                        <p>We prioritize trust, performance, and continuous improvement — ensuring every project is secure, optimized, and ready for real-world growth.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Services Section -->
         <section id="services" class="services section-padding bg-light">
             <div class="container">
@@ -135,72 +211,156 @@
                 </div>
 
                 <div class="services-grid">
-                    <!-- Service 1 -->
                     <div class="service-card reveal-up" style="transition-delay: 0.1s;">
                         <div class="icon-box">
-                            <i class="fa-solid fa-file-invoice-dollar"></i>
+                            <i class="fa-solid fa-code"></i>
                         </div>
-                        <h3>Billing & Invoicing</h3>
-                        <p>Streamline your financial processes with easy billing, custom invoices, and automated
-                            reporting systems.</p>
-                        <a href="#" class="service-link service-trigger" data-service="billing">Learn more <i
-                                class="fa-solid fa-arrow-right"></i></a>
+                        <h3>Custom Software Solutions</h3>
+                        <p>Build tailored applications that automate operations, improve customer experiences, and scale as your business grows.</p>
+                        <a href="#" class="service-link service-trigger" data-service="software">Learn more <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
-                    <!-- Service 2 -->
                     <div class="service-card reveal-up" style="transition-delay: 0.2s;">
                         <div class="icon-box">
-                            <i class="fa-solid fa-users"></i>
+                            <i class="fa-solid fa-pencil-ruler"></i>
                         </div>
-                        <h3>Customer Management</h3>
-                        <p>Robust CRM solutions to manage customer data, track appointments, and automate follow-ups
-                            effortlessly.</p>
-                        <a href="#" class="service-link service-trigger" data-service="crm">Learn more <i
-                                class="fa-solid fa-arrow-right"></i></a>
+                        <h3>UI/UX & Product Design</h3>
+                        <p>Design intuitive interfaces and customer journeys that convert visitors into leads and improve retention.</p>
+                        <a href="#" class="service-link service-trigger" data-service="design">Learn more <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
-                    <!-- Service 3 -->
                     <div class="service-card reveal-up" style="transition-delay: 0.3s;">
                         <div class="icon-box">
-                            <i class="fa-regular fa-calendar-check"></i>
+                            <i class="fa-solid fa-globe"></i>
                         </div>
-                        <h3>Online Booking Systems</h3>
-                        <p>Enable seamless 24/7 self-service scheduling for your clients with our integrated online
-                            booking portals.</p>
-                        <a href="#" class="service-link service-trigger" data-service="booking">Learn more <i
-                                class="fa-solid fa-arrow-right"></i></a>
+                        <h3>Web & E-commerce Development</h3>
+                        <p>Create responsive websites and online stores optimized for speed, SEO, and seamless mobile experiences.</p>
+                        <a href="#" class="service-link service-trigger" data-service="web">Learn more <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
-                    <!-- Service 4 -->
                     <div class="service-card reveal-up" style="transition-delay: 0.4s;">
                         <div class="icon-box">
-                            <i class="fa-solid fa-box-open"></i>
+                            <i class="fa-solid fa-shield-halved"></i>
                         </div>
-                        <h3>Inventory Management</h3>
-                        <p>Real-time stock tracking and automated alerts ensure you never miss out on fulfilling
-                            customer demands.</p>
-                        <a href="#" class="service-link service-trigger" data-service="inventory">Learn more <i
-                                class="fa-solid fa-arrow-right"></i></a>
+                        <h3>Hosting, SSL & Deployment</h3>
+                        <p>Secure hosting, HTTPS setup, deployment support, and ongoing performance monitoring for reliable uptime.</p>
+                        <a href="#" class="service-link service-trigger" data-service="hosting">Learn more <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
-                    <!-- Service 5 -->
                     <div class="service-card reveal-up" style="transition-delay: 0.5s;">
                         <div class="icon-box">
                             <i class="fa-brands fa-whatsapp"></i>
                         </div>
                         <h3>WhatsApp Automation</h3>
-                        <p>Leverage the power of instant messaging with automated replies, booking confirmations, and
-                            engagement bots.</p>
-                        <a href="#" class="service-link service-trigger" data-service="whatsapp">Learn more <i
-                                class="fa-solid fa-arrow-right"></i></a>
+                        <p>Engage customers instantly with automated WhatsApp confirmations, reminders, and support flows.</p>
+                        <a href="#" class="service-link service-trigger" data-service="whatsapp">Learn more <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
-                    <!-- Service 6 -->
                     <div class="service-card reveal-up" style="transition-delay: 0.6s;">
                         <div class="icon-box">
-                            <i class="fa-solid fa-code"></i>
+                            <i class="fa-solid fa-file-invoice-dollar"></i>
                         </div>
-                        <h3>Custom Web Development</h3>
-                        <p>High-performance, beautifully designed custom websites and progressive web apps for your
-                            unique business.</p>
-                        <a href="#" class="service-link service-trigger" data-service="web">Learn more <i
-                                class="fa-solid fa-arrow-right"></i></a>
+                        <h3>Billing & Invoicing</h3>
+                        <p>Manage payments, invoices, and financial reporting with automated systems built for your workflow.</p>
+                        <a href="#" class="service-link service-trigger" data-service="billing">Learn more <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
+                    <div class="service-card reveal-up" style="transition-delay: 0.7s;">
+                        <div class="icon-box">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <h3>Customer Management</h3>
+                        <p>Keep customer information organized and accessible with CRM features for follow-ups, appointments, and history.</p>
+                        <a href="#" class="service-link service-trigger" data-service="crm">Learn more <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    <div class="service-card reveal-up" style="transition-delay: 0.8s;">
+                        <div class="icon-box">
+                            <i class="fa-solid fa-box-open"></i>
+                        </div>
+                        <h3>Inventory & Order Management</h3>
+                        <p>Track stock, automate reorder alerts, and keep orders moving through efficient inventory control systems.</p>
+                        <a href="#" class="service-link service-trigger" data-service="inventory">Learn more <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Portfolio / Projects -->
+        <section id="portfolio" class="portfolio section-padding">
+            <div class="container">
+                <div class="section-heading text-center reveal-up">
+                    <span class="subtitle">Portfolio</span>
+                    <h2>Recent Projects & Case Studies</h2>
+                    <p>Trusted solutions built with modern designs, strong performance, and the right technology stack.</p>
+                </div>
+                <div class="project-grid">
+                    <article class="project-card service-card reveal-up" style="transition-delay: 0.1s;">
+                        <div class="icon-box project-icon"><i class="fa-solid fa-envelope"></i></div>
+                        <h3>Email Marketing Platform</h3>
+                        <p>An email marketing dashboard with campaign automation, analytics, and lead capture workflows.</p>
+                        <div class="project-screenshot project-image-preview">
+                            <img src="emt.png" alt="Email Marketing Platform preview">
+                        </div>
+                        <div class="project-tech">React + NestJS + PostgreSQL</div>
+                        <!-- <a href="#" class="service-link">View Project <i class="fa-solid fa-arrow-right"></i></a> -->
+                    </article>
+                    <article class="project-card service-card reveal-up" style="transition-delay: 0.2s;">
+                        <div class="icon-box project-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                        <h3>Billing & CRM Portal</h3>
+                        <p>Combined billing, customer management, and reporting tools in one easy-to-use business portal.</p>
+                        <div class="project-screenshot project-image-preview">
+                            <img src="crm.png" alt="Billing & CRM Portal preview">
+                        </div>
+                        <div class="project-tech">Angular + Express + MySQL</div>
+                        <!-- <a href="#" class="service-link">View Project <i class="fa-solid fa-arrow-right"></i></a> -->
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section id="testimonials" class="testimonials section-padding bg-light">
+            <div class="container">
+                <div class="section-heading text-center reveal-up">
+                    <span class="subtitle">Client Trust</span>
+                    <h2>What customers say about us</h2>
+                    <p>Our clients appreciate the speed, clarity, and business focus we bring to every project.</p>
+                </div>
+
+                <div class="testimonial-grid">
+                    <article class="testimonial-card service-card reveal-up" style="transition-delay: 0.1s;">
+                        <div class="testimonial-logo">
+                            <img src="priya.png" alt="Priya photo">
+                        </div>
+                        <div class="testimonial-icon icon-box">
+                            <i class="fa-solid fa-quote-left"></i>
+                        </div>
+                        <p>“Harsh Tech helped us launch a fast, mobile-friendly website with strong SEO. Within weeks our contact form leads increased significantly.”</p>
+                        <div class="testimonial-author">
+                            <strong>Priya K.</strong>
+                            <span>Founder, Retail Studio</span>
+                        </div>
+                    </article>
+                    <article class="testimonial-card service-card reveal-up" style="transition-delay: 0.2s;">
+                        <div class="testimonial-logo">
+                            <img src="rohit.png" alt="Rohit photo">
+                        </div>
+                        <div class="testimonial-icon icon-box">
+                            <i class="fa-solid fa-quote-left"></i>
+                        </div>
+                        <p>“Their WhatsApp automation and billing system made daily operations easier, and deployment was handled professionally with HTTPS setup.”</p>
+                        <div class="testimonial-author">
+                            <strong>Rohit S.</strong>
+                            <span>Operations Head, Services Co.</span>
+                        </div>
+                    </article>
+                    <article class="testimonial-card service-card reveal-up" style="transition-delay: 0.3s;">
+                        <div class="testimonial-logo">
+                            <img src="meera.png" alt="Meera photo">
+                        </div>
+                        <div class="testimonial-icon icon-box">
+                            <i class="fa-solid fa-quote-left"></i>
+                        </div>
+                        <p>“A polished UI/UX refresh and fast hosting improved our lead rate. The team also added SEO-friendly content that helped our visibility online.”</p>
+                        <div class="testimonial-author">
+                            <strong>Meera P.</strong>
+                            <span>Marketing Lead, Tech Ventures</span>
+                        </div>
+                    </article>
                 </div>
             </div>
         </section>
@@ -333,11 +493,16 @@
                                 <input type="email" id="contactEmail" placeholder="Your Email" required>
                             </div>
                             <div class="form-group">
+                                <input type="tel" id="contactPhone" placeholder="Your Phone Number" required>
+                            </div>
+                            <div class="form-group">
                                 <select id="contactSubject" required>
                                     <option value="" disabled selected>Select Service</option>
                                     <option value="Custom Software">Custom Software</option>
                                     <option value="Web Development">Web Development</option>
                                     <option value="WhatsApp Automation">WhatsApp Automation</option>
+                                    <option value="UI/UX Design">UI/UX Design</option>
+                                    <option value="Hosting & Deployment">Hosting & Deployment</option>
                                     <option value="Other">Other</option>
                                 </select>
                             </div>
@@ -365,7 +530,7 @@
                     <div class="footer-widget brand-widget">
                         <div class="logo footer-logo">
                             <a href="#">
-                                <img src="logo.png" alt="Harsh Tech Solutions Logo" class="site-logo">
+                                <img src="logo.png" alt="Harsh Tech Solutions Logo" class="site-logo" loading="lazy" decoding="async">
                                 <span>Harsh Tech Solutions</span>
                             </a>
                         </div>
@@ -455,7 +620,13 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <div class="whatsapp-floating">
+        <a href="https://wa.me/919028553395?text=Hello%20Harsh%20Tech%20Solutions%2C%20I%20am%20interested%20in%20your%20services" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+            <i class="fa-brands fa-whatsapp"></i>
+            <!-- <span>Chat</span> -->
+        </a>
+    </div>
+    <script src="script.js" defer></script>
 </body>
 
 </html>

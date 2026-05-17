@@ -33,6 +33,8 @@ const pool = new Pool({
     },
 });
 
+app.set('trust proxy', 1);
+
 pool.connect((err) => {
     if (err) {
         console.error('Error connecting to PostgreSQL:', err.stack);
@@ -43,6 +45,7 @@ pool.connect((err) => {
             id SERIAL PRIMARY KEY,
             name VARCHAR(255) NOT NULL,
             email VARCHAR(255) NOT NULL,
+            phone VARCHAR(50) NOT NULL,
             subject VARCHAR(255),
             message TEXT NOT NULL,
             is_contacted BOOLEAN DEFAULT FALSE,
@@ -51,23 +54,22 @@ pool.connect((err) => {
             if (err) {
                 console.error('Error creating table:', err.stack);
             } else {
-                // Attempt to add column to existing table (will silently fail if it already exists)
-                pool.query("ALTER TABLE contacts ADD COLUMN is_contacted BOOLEAN DEFAULT FALSE", () => {});
+                pool.query("ALTER TABLE contacts ADD COLUMN IF NOT EXISTS phone VARCHAR(50) NOT NULL DEFAULT ''", () => {});
+                pool.query("ALTER TABLE contacts ADD COLUMN IF NOT EXISTS is_contacted BOOLEAN DEFAULT FALSE", () => {});
             }
         });
     }
 });
 
-// API Endpoint to receive contact form submissions
 app.post('/api/contact', (req, res) => {
-    const { name, email, subject, message } = req.body;
+    const { name, email, phone, subject, message } = req.body;
 
-    if (!name || !email || !message) {
-        return res.status(400).json({ error: 'Name, email, and message are required.' });
+    if (!name || !email || !phone || !message) {
+        return res.status(400).json({ error: 'Name, email, phone, and message are required.' });
     }
 
-    const sql = `INSERT INTO contacts (name, email, subject, message) VALUES ($1, $2, $3, $4) RETURNING id`;
-    pool.query(sql, [name, email, subject, message], (err, result) => {
+    const sql = `INSERT INTO contacts (name, email, phone, subject, message) VALUES ($1, $2, $3, $4, $5) RETURNING id`;
+    pool.query(sql, [name, email, phone, subject, message], (err, result) => {
         if (err) {
             console.error('Error inserting data:', err.stack);
             return res.status(500).json({ error: 'Failed to save your message.' });
