@@ -690,7 +690,10 @@
                 return;
             }
 
-            tableBody.innerHTML = data.map((row, index) => {
+            // Ensure oldest records appear first and newest at the end
+            const sortedData = data.slice().sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+
+            tableBody.innerHTML = sortedData.map((row, index) => {
                 const date = new Date(row.created_at).toLocaleDateString('en-US', {
                     month: 'short', day: 'numeric', year: 'numeric'
                 });
