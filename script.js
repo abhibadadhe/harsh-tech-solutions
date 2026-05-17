@@ -66,11 +66,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const mobileNavLinks = navLinks.querySelectorAll('a');
         mobileNavLinks.forEach(link => {
             link.addEventListener('click', (e) => {
-                // If this link is the parent dropdown toggle on mobile, don't close here
+                // If this link is the parent dropdown anchor on mobile, allow navigation to the section
                 const parentHas = link.closest('.has-dropdown');
                 if (window.innerWidth <= 768 && parentHas && parentHas.querySelector(':scope > a') === link) {
-                    // let the parent toggle handler manage open/close
-                    return;
+                    // Let the anchor navigate to the section, then close the mobile menu
+                    if (navLinks.classList.contains('active')) {
+                        setTimeout(() => closeMenu(), 60);
+                    }
+                    return; // don't run the default close logic below
                 }
 
                 // Close the mobile nav when any other link is clicked while menu is open.
@@ -95,10 +98,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!parentLink) return;
         parentLink.addEventListener('click', (e) => {
             if (window.innerWidth <= 768) {
-                e.preventDefault();
-                e.stopPropagation();
-                parent.classList.toggle('active');
+                // On mobile, we don't show the dropdown inside the nav; navigate to the section
+                // Allow default anchor behavior (do not preventDefault). Close the menu shortly after.
+                if (navLinks.classList.contains('active')) {
+                    setTimeout(() => closeMenu(), 60);
+                }
+                return;
             }
+
+            // On larger screens keep the existing toggle-by-click behavior if needed
+            // (click will toggle the active class only when explicitly desired)
+            // If desired to toggle on desktop click, uncomment below lines.
+            // e.preventDefault();
+            // parent.classList.toggle('active');
         });
     });
 
