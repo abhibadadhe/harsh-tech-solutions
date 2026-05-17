@@ -287,7 +287,9 @@ img {
 .has-dropdown>a {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 0.25rem;
+    width: 100%;
 }
 
 .dropdown {
@@ -296,6 +298,8 @@ img {
     left: 0;
     background: white;
     min-width: 220px;
+    max-width: 260px;
+    width: auto;
     box-shadow: var(--shadow-lg);
     border-radius: 8px;
     opacity: 0;
@@ -316,6 +320,8 @@ img {
     display: block;
     padding: 0.75rem 1.5rem;
     color: var(--text-main);
+    width: 100%;
+    white-space: normal;
 }
 
 .dropdown li a::after {
@@ -1576,10 +1582,16 @@ img {
         display: none;
         background: var(--bg-light);
         margin-top: 1rem;
+        width: 100%;
     }
 
     .has-dropdown.active .dropdown {
         display: block;
+    }
+
+    .has-dropdown.active > a i {
+        transform: rotate(180deg);
+        transition: transform 0.3s ease;
     }
 
     .hero h1 {

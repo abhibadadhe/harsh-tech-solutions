@@ -285,6 +285,14 @@
 
         .sidebar-toggle {
             display: none;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .sidebar-toggle i {
+            font-size: 1rem;
         }
 
         .btn:hover {
@@ -361,6 +369,14 @@
                 display: flex;
                 align-items: center;
                 gap: 0.75rem;
+                flex-wrap: wrap;
+                width: 100%;
+                justify-content: flex-end;
+            }
+
+            .top-header-actions button {
+                white-space: nowrap;
+                flex-shrink: 0;
             }
 
             .sidebar {
