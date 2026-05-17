@@ -1599,6 +1599,10 @@ img {
         padding-right: 0;
     }
 
+    .has-dropdown > a i {
+        display: none;
+    }
+
     .has-dropdown .dropdown {
         position: static;
         box-shadow: none;
