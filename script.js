@@ -290,6 +290,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Scalable architecture'
             ]
         },
+        'saas': {
+            title: 'SaaS Platform Development',
+            description: 'We design and engineer highly scalable Software-as-a-Service platforms built on secure, modern cloud architectures.',
+            features: [
+                'Multi-tenant database structures',
+                'Stripe & Razorpay payment integrations',
+                'Custom subscription billing logic',
+                'Elastic auto-scaling server configurations',
+                'Advanced user analytics dashboards'
+            ]
+        },
         'about': {
             title: 'About Harsh Tech Solutions',
             description: 'Harsh Tech Solutions is a technology-driven company focused on delivering innovative digital solutions including web development, software applications, AI-powered systems, and IT services. We help businesses build a strong digital presence with reliable and scalable technology solutions.',
@@ -490,6 +501,66 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // 9. FAQ Accordion Click Handler
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        if (question) {
+            question.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                // Close all other items
+                faqItems.forEach(otherItem => {
+                    otherItem.classList.remove('active');
+                    const otherAnswer = otherItem.querySelector('.faq-answer');
+                    if (otherAnswer) otherAnswer.style.maxHeight = null;
+                });
+                
+                // Toggle current item
+                if (!isActive) {
+                    item.classList.add('active');
+                    const answer = item.querySelector('.faq-answer');
+                    if (answer) {
+                        answer.style.maxHeight = answer.scrollHeight + 'px';
+                    }
+                }
+            });
+        }
+    });
+
+    // 10. Portfolio Dynamic Filtering
+    const filterButtons = document.querySelectorAll('.portfolio-filters .filter-btn');
+    const projectCards = document.querySelectorAll('.project-grid .project-card');
+
+    if (filterButtons.length > 0 && projectCards.length > 0) {
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(b => b.classList.remove('active'));
+                // Add active class to current button
+                btn.classList.add('active');
+
+                const filterValue = btn.getAttribute('data-filter');
+
+                projectCards.forEach(card => {
+                    // Reset animation/visibility classes
+                    card.classList.remove('portfolio-hidden');
+                    card.classList.remove('portfolio-fade-in');
+
+                    const cardCategory = card.getAttribute('data-category');
+
+                    if (filterValue === 'all' || cardCategory === filterValue) {
+                        // Force a layout reflow to restart CSS keyframe animations
+                        void card.offsetWidth;
+                        card.classList.add('portfolio-fade-in');
+                    } else {
+                        card.classList.add('portfolio-hidden');
+                    }
+                });
+            });
+        });
+    }
 });
 
 // Global function to copy email to clipboard (used in index.html)
@@ -505,4 +576,14 @@ window.copyEmailGlobal = function(email) {
     }).catch(err => {
         console.error('Failed to copy: ', err);
     });
+};
+
+// Global function to pre-select contact service and scroll to it (used in index.html)
+window.selectContactService = function(serviceVal) {
+    const selectEl = document.getElementById('contactSubject');
+    if (selectEl) {
+        selectEl.value = serviceVal;
+        // Trigger change event for dropdown interactions
+        selectEl.dispatchEvent(new Event('change'));
+    }
 };
