@@ -41,20 +41,20 @@
                     <li class="has-dropdown active">
                         <a href="/#services" class="active">Services <i class="fa-solid fa-chevron-down"></i></a>
                         <ul class="dropdown">
-                            <li><a href="service-details.html?service=software">Custom Software Solutions</a></li>
-                            <li><a href="service-details.html?service=saas">SaaS Platforms</a></li>
-                            <li><a href="service-details.html?service=web">Web & E-commerce Development</a></li>
-                            <li><a href="service-details.html?service=crm">Customer Management (CRM)</a></li>
-                            <li><a href="service-details.html?service=billing">Billing & Invoicing</a></li>
-                            <li><a href="service-details.html?service=whatsapp">WhatsApp Automation</a></li>
-                            <li><a href="service-details.html?service=inventory">Inventory & Order Management</a></li>
-                            <li><a href="service-details.html?service=design">UI/UX & Product Design</a></li>
-                            <li><a href="service-details.html?service=hosting">Hosting, SSL & Deployment</a></li>
+                            <li><a href="/software">Custom Software Solutions</a></li>
+                            <li><a href="/saas">SaaS Platforms</a></li>
+                            <li><a href="/web">Web & E-commerce Development</a></li>
+                            <li><a href="/crm">Customer Management (CRM)</a></li>
+                            <li><a href="/billing">Billing & Invoicing</a></li>
+                            <li><a href="/whatsapp">WhatsApp Automation</a></li>
+                            <li><a href="/inventory">Inventory & Order Management</a></li>
+                            <li><a href="/design">UI/UX & Product Design</a></li>
+                            <li><a href="/hosting">Hosting, SSL & Deployment</a></li>
                         </ul>
                     </li>
                     <li><a href="/#portfolio">Portfolio</a></li>
                     <li><a href="/#approach">Our Approach</a></li>
-                    <li><a href="service-details.html?service=about">About Us</a></li>
+                    <li><a href="/about">About Us</a></li>
                 </ul>
                 <div class="nav-actions">
                     <a href="/#contact" class="btn btn-primary">Let's Talk <i class="fa-solid fa-arrow-right"></i></a>
@@ -129,23 +129,23 @@
                     <div class="footer-widget">
                         <h3>Our Services</h3>
                         <ul class="footer-links">
-                            <li><a href="service-details.html?service=software"><i class="fa-solid fa-angle-right"></i> Custom Software</a></li>
-                            <li><a href="service-details.html?service=saas"><i class="fa-solid fa-angle-right"></i> SaaS Platforms</a></li>
-                            <li><a href="service-details.html?service=web"><i class="fa-solid fa-angle-right"></i> Web Development</a></li>
-                            <li><a href="service-details.html?service=billing"><i class="fa-solid fa-angle-right"></i> Billing & Invoicing</a></li>
-                            <li><a href="service-details.html?service=whatsapp"><i class="fa-solid fa-angle-right"></i> WhatsApp Automation</a></li>
-                            <li><a href="service-details.html?service=hosting"><i class="fa-solid fa-angle-right"></i> Hosting & Deployment</a></li>
+                            <li><a href="/software"><i class="fa-solid fa-angle-right"></i> Custom Software</a></li>
+                            <li><a href="/saas"><i class="fa-solid fa-angle-right"></i> SaaS Platforms</a></li>
+                            <li><a href="/web"><i class="fa-solid fa-angle-right"></i> Web Development</a></li>
+                            <li><a href="/billing"><i class="fa-solid fa-angle-right"></i> Billing & Invoicing</a></li>
+                            <li><a href="/whatsapp"><i class="fa-solid fa-angle-right"></i> WhatsApp Automation</a></li>
+                            <li><a href="/hosting"><i class="fa-solid fa-angle-right"></i> Hosting & Deployment</a></li>
                         </ul>
                     </div>
 
                     <div class="footer-widget">
                         <h3>Company</h3>
                         <ul class="footer-links">
-                            <li><a href="service-details.html?service=about"><i class="fa-solid fa-angle-right"></i> About Us</a></li>
+                            <li><a href="/about"><i class="fa-solid fa-angle-right"></i> About Us</a></li>
                             <li><a href="/#approach"><i class="fa-solid fa-angle-right"></i> Our Approach</a></li>
                             <li><a href="/#faq"><i class="fa-solid fa-angle-right"></i> FAQs</a></li>
-                            <li><a href="service-details.html?service=privacy"><i class="fa-solid fa-angle-right"></i> Privacy Policy</a></li>
-                            <li><a href="service-details.html?service=terms"><i class="fa-solid fa-angle-right"></i> Terms of Service</a></li>
+                            <li><a href="/privacy"><i class="fa-solid fa-angle-right"></i> Privacy Policy</a></li>
+                            <li><a href="/terms"><i class="fa-solid fa-angle-right"></i> Terms of Service</a></li>
                         </ul>
                     </div>
 
@@ -349,7 +349,18 @@
         document.addEventListener('DOMContentLoaded', () => {
             // Parse parameters
             const urlParams = new URLSearchParams(window.location.search);
-            const serviceKey = urlParams.get('service') || 'software';
+            let serviceKey = urlParams.get('service');
+            
+            if (!serviceKey) {
+                const pathParts = window.location.pathname.split('/');
+                const lastSegment = pathParts[pathParts.length - 1];
+                if (lastSegment && lastSegment !== 'service-details.html' && serviceData[lastSegment]) {
+                    serviceKey = lastSegment;
+                } else {
+                    serviceKey = 'software';
+                }
+            }
+            
             const data = serviceData[serviceKey];
 
             if (data) {

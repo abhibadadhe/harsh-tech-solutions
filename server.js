@@ -25,12 +25,27 @@ app.get('/admin', (req, res) => {
     res.sendFile(path.join(__dirname, 'admin.html'));
 });
 
+// Clean URLs for Services & Company Pages
+const cleanRoutes = [
+    'billing', 'crm', 'booking', 'inventory', 'whatsapp', 
+    'hosting', 'design', 'web', 'software', 'saas', 
+    'about', 'privacy', 'terms'
+];
+
+cleanRoutes.forEach(route => {
+    app.get(`/${route}`, (req, res) => {
+        res.sendFile(path.join(__dirname, 'service-details.html'));
+    });
+});
+
 // Initialize PostgreSQL database
+const sslConfig = process.env.DATABASE_URL && !(process.env.DATABASE_URL.includes('localhost') || process.env.DATABASE_URL.includes('127.0.0.1'))
+    ? { rejectUnauthorized: false }
+    : false;
+
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false,
-    },
+    ssl: sslConfig,
 });
 
 app.set('trust proxy', 1);
