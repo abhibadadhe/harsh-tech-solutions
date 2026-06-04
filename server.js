@@ -54,15 +54,15 @@ pool.connect((err) => {
             if (err) {
                 console.error('Error creating table:', err.stack);
             } else {
-                pool.query("ALTER TABLE contacts ADD COLUMN IF NOT EXISTS phone VARCHAR(50) NOT NULL DEFAULT ''", () => {});
-                pool.query("ALTER TABLE contacts ADD COLUMN IF NOT EXISTS is_contacted BOOLEAN DEFAULT FALSE", () => {});
+                pool.query("ALTER TABLE contacts ADD COLUMN IF NOT EXISTS phone VARCHAR(50) NOT NULL DEFAULT ''", () => { });
+                pool.query("ALTER TABLE contacts ADD COLUMN IF NOT EXISTS is_contacted BOOLEAN DEFAULT FALSE", () => { });
             }
             pool.query(`
 CREATE INDEX IF NOT EXISTS idx_contacts_created_at 
 ON contacts(created_at DESC)
 `);
 
-pool.query(`
+            pool.query(`
 CREATE INDEX IF NOT EXISTS idx_contacts_is_contacted 
 ON contacts(is_contacted)
 `);
@@ -91,7 +91,7 @@ app.post('/api/contact', (req, res) => {
 // Note: Secured with a simple header check for demonstration purposes
 app.get('/api/admin/contacts', (req, res) => {
     const authHeader = req.headers['authorization'];
-    
+
     // Very simple password check: "admin123"
     // In a real app, use proper JWT or session-based authentication
     if (authHeader !== 'Bearer admin123') {
@@ -123,6 +123,42 @@ app.put('/api/admin/contacts/:id', (req, res) => {
         if (err) {
             console.error('Error updating data:', err.stack);
             return res.status(500).json({ error: 'Failed to update status.' });
+        }
+        res.json({ success: true });
+    });
+});
+
+// API Endpoint to delete a single contact inquiry
+app.delete('/api/admin/contacts/:id', (req, res) => {
+    const authHeader = req.headers['authorization'];
+    if (authHeader !== 'Bearer admin123') {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const { id } = req.params;
+
+    const sql = `DELETE FROM contacts WHERE id = $1`;
+    pool.query(sql, [id], (err, result) => {
+        if (err) {
+            console.error('Error deleting data:', err.stack);
+            return res.status(500).json({ error: 'Failed to delete record.' });
+        }
+        res.json({ success: true });
+    });
+});
+
+// API Endpoint to delete all contact inquiries
+app.delete('/api/admin/contacts', (req, res) => {
+    const authHeader = req.headers['authorization'];
+    if (authHeader !== 'Bearer admin123') {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const sql = `DELETE FROM contacts`;
+    pool.query(sql, [], (err, result) => {
+        if (err) {
+            console.error('Error clearing data:', err.stack);
+            return res.status(500).json({ error: 'Failed to clear records.' });
         }
         res.json({ success: true });
     });

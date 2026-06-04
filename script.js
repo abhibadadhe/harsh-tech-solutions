@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Sticky Navbar
     const navbar = document.getElementById('navbar');
-    
+
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
             navbar.classList.add('scrolled');
@@ -353,7 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const serviceKey = trigger.getAttribute('data-service');
             const data = serviceData[serviceKey];
-            
+
             if (data) {
                 let featuresHtml = data.features.map(f => `<li><i class="fa-solid fa-check-circle"></i> ${f}</li>`).join('');
                 modalContent.innerHTML = `
@@ -364,7 +364,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </ul>
                     <a href="#contact" class="btn btn-primary btn-block" id="modal-cta">Get Started <i class="fa-solid fa-arrow-right"></i></a>
                 `;
-                
+
                 document.getElementById('modal-cta').addEventListener('click', () => {
                     closeModal();
                 });
@@ -383,9 +383,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.style.overflow = 'auto';
     };
 
-    if(modalCloseBtn) modalCloseBtn.addEventListener('click', closeModal);
+    if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeModal);
 
-    if(modalOverlay) {
+    if (modalOverlay) {
         modalOverlay.addEventListener('click', (e) => {
             if (e.target === modalOverlay) {
                 closeModal();
@@ -456,10 +456,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (contactForm) {
         contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             const submitBtn = document.getElementById('contactSubmitBtn');
             const originalBtnText = submitBtn.innerHTML;
-            
+
             // UI Loading state
             submitBtn.innerHTML = 'Sending... <i class="fa-solid fa-spinner fa-spin"></i>';
             submitBtn.disabled = true;
@@ -509,14 +509,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (question) {
             question.addEventListener('click', () => {
                 const isActive = item.classList.contains('active');
-                
+
                 // Close all other items
                 faqItems.forEach(otherItem => {
                     otherItem.classList.remove('active');
                     const otherAnswer = otherItem.querySelector('.faq-answer');
                     if (otherAnswer) otherAnswer.style.maxHeight = null;
                 });
-                
+
                 // Toggle current item
                 if (!isActive) {
                     item.classList.add('active');
@@ -564,7 +564,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Global function to copy email to clipboard (used in index.html)
-window.copyEmailGlobal = function(email) {
+window.copyEmailGlobal = function (email) {
     navigator.clipboard.writeText(email).then(() => {
         // Show the existing premium toast if possible, otherwise use alert
         const toastContainer = document.getElementById('toast-container');
@@ -579,7 +579,7 @@ window.copyEmailGlobal = function(email) {
 };
 
 // Global function to pre-select contact service and scroll to it (used in index.html)
-window.selectContactService = function(serviceVal) {
+window.selectContactService = function (serviceVal) {
     const selectEl = document.getElementById('contactSubject');
     if (selectEl) {
         selectEl.value = serviceVal;
@@ -587,3 +587,46 @@ window.selectContactService = function(serviceVal) {
         selectEl.dispatchEvent(new Event('change'));
     }
 };
+
+// Portfolio Filter Logic
+(function () {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.project-card');
+
+    if (!filterBtns.length || !projectCards.length) return;
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Update active button
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const filter = btn.dataset.filter;
+
+            projectCards.forEach(card => {
+                const show = filter === 'all' || card.dataset.category === filter;
+
+                if (show) {
+                    // First unhide, then animate in
+                    card.classList.remove('hidden');
+                    card.style.transition = 'none';
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(16px)';
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => {
+                            card.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        });
+                    });
+                } else {
+                    // Hide immediately — no animation needed when removing
+                    card.classList.add('hidden');
+                    card.style.opacity = '';
+                    card.style.transform = '';
+                    card.style.transition = '';
+                }
+            });
+        });
+    });
+})();
