@@ -232,11 +232,26 @@ img {
     box-shadow: var(--shadow-md);
 }
 
+.navbar.scrolled .nav-container {
+    min-height: 70px;
+}
+
 .nav-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     min-height: 100px;
+    transition: var(--transition);
+}
+
+.site-logo {
+    height: 48px;
+    width: auto;
+    transition: var(--transition);
+}
+
+.navbar.scrolled .site-logo {
+    height: 40px;
 }
 
 .logo a {
