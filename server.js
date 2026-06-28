@@ -14,16 +14,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Serve static assets (CSS, JS, images, etc.)
-app.use(express.static(path.join(__dirname)));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Route: Home Page
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Route: Admin Panel Clean URL
 app.get('/admin', (req, res) => {
-    res.sendFile(path.join(__dirname, 'admin.html'));
+    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
 // Clean URLs for Services & Company Pages
@@ -35,7 +35,7 @@ const cleanRoutes = [
 
 cleanRoutes.forEach(route => {
     app.get(`/${route}`, (req, res) => {
-        res.sendFile(path.join(__dirname, 'service-details.html'));
+        res.sendFile(path.join(__dirname, 'public', 'service-details.html'));
     });
 });
 
