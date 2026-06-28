@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index.js" },
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/billing", "destination": "/service-details.html" },
+    { "source": "/crm", "destination": "/service-details.html" },
+    { "source": "/booking", "destination": "/service-details.html" },
+    { "source": "/inventory", "destination": "/service-details.html" },
+    { "source": "/whatsapp", "destination": "/service-details.html" },
+    { "source": "/hosting", "destination": "/service-details.html" },
+    { "source": "/design", "destination": "/service-details.html" },
+    { "source": "/web", "destination": "/service-details.html" },
+    { "source": "/software", "destination": "/service-details.html" },
+    { "source": "/saas", "destination": "/service-details.html" },
+    { "source": "/about", "destination": "/service-details.html" },
+    { "source": "/privacy", "destination": "/service-details.html" },
+    { "source": "/terms", "destination": "/service-details.html" }
+  ]
+}

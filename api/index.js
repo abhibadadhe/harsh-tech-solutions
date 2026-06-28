@@ -3,41 +3,13 @@ const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// Serve static assets (CSS, JS, images, etc.)
-app.use(express.static(path.join(__dirname)));
-
-// Route: Home Page
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
-});
-
-// Route: Admin Panel Clean URL
-app.get('/admin', (req, res) => {
-    res.sendFile(path.join(__dirname, 'admin.html'));
-});
-
-// Clean URLs for Services & Company Pages
-const cleanRoutes = [
-    'billing', 'crm', 'booking', 'inventory', 'whatsapp', 
-    'hosting', 'design', 'web', 'software', 'saas', 
-    'about', 'privacy', 'terms'
-];
-
-cleanRoutes.forEach(route => {
-    app.get(`/${route}`, (req, res) => {
-        res.sendFile(path.join(__dirname, 'service-details.html'));
-    });
-});
 
 // Initialize PostgreSQL database
 const sslConfig = process.env.DATABASE_URL && !(process.env.DATABASE_URL.includes('localhost') || process.env.DATABASE_URL.includes('127.0.0.1'))
@@ -86,6 +58,7 @@ ON contacts(is_contacted)
     }
 });
 
+// API Endpoint for Contact Form submission
 app.post('/api/contact', (req, res) => {
     const { name, email, phone, subject, message } = req.body;
 
@@ -104,12 +77,9 @@ app.post('/api/contact', (req, res) => {
 });
 
 // API Endpoint for Admin Panel to get all contacts
-// Note: Secured with a simple header check for demonstration purposes
 app.get('/api/admin/contacts', (req, res) => {
     const authHeader = req.headers['authorization'];
 
-    // Very simple password check: "admin123"
-    // In a real app, use proper JWT or session-based authentication
     if (authHeader !== 'Bearer admin123') {
         return res.status(401).json({ error: 'Unauthorized' });
     }
@@ -180,8 +150,4 @@ app.delete('/api/admin/contacts', (req, res) => {
     });
 });
 
-// Start the server
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-    console.log(`Admin panel available at http://localhost:${PORT}/admin.html`);
-});
+module.exports = app;
