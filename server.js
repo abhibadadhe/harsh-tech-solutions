@@ -7,6 +7,7 @@ const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 
 // Middleware
 app.use(cors());
@@ -101,7 +102,7 @@ app.get('/api/admin/contacts', (req, res) => {
 
     // Very simple password check: "admin123"
     // In a real app, use proper JWT or session-based authentication
-    if (authHeader !== 'Bearer admin123') {
+    if (authHeader !== `Bearer ${ADMIN_PASSWORD}`) {
         return res.status(401).json({ error: 'Unauthorized' });
     }
 
@@ -118,7 +119,7 @@ app.get('/api/admin/contacts', (req, res) => {
 // API Endpoint to toggle contact status
 app.put('/api/admin/contacts/:id', (req, res) => {
     const authHeader = req.headers['authorization'];
-    if (authHeader !== 'Bearer admin123') {
+    if (authHeader !== `Bearer ${ADMIN_PASSWORD}`) {
         return res.status(401).json({ error: 'Unauthorized' });
     }
 
@@ -138,7 +139,7 @@ app.put('/api/admin/contacts/:id', (req, res) => {
 // API Endpoint to delete a single contact inquiry
 app.delete('/api/admin/contacts/:id', (req, res) => {
     const authHeader = req.headers['authorization'];
-    if (authHeader !== 'Bearer admin123') {
+    if (authHeader !== `Bearer ${ADMIN_PASSWORD}`) {
         return res.status(401).json({ error: 'Unauthorized' });
     }
 
@@ -157,7 +158,7 @@ app.delete('/api/admin/contacts/:id', (req, res) => {
 // API Endpoint to delete all contact inquiries
 app.delete('/api/admin/contacts', (req, res) => {
     const authHeader = req.headers['authorization'];
-    if (authHeader !== 'Bearer admin123') {
+    if (authHeader !== `Bearer ${ADMIN_PASSWORD}`) {
         return res.status(401).json({ error: 'Unauthorized' });
     }
 
