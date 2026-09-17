@@ -548,9 +548,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     card.classList.remove('portfolio-hidden');
                     card.classList.remove('portfolio-fade-in');
 
-                    const cardCategory = card.getAttribute('data-category');
+                    const cardCategories = (card.getAttribute('data-category') || '').trim().split(/\s+/);
 
-                    if (filterValue === 'all' || cardCategory === filterValue) {
+                    if (filterValue === 'all' || cardCategories.includes(filterValue)) {
                         // Force a layout reflow to restart CSS keyframe animations
                         void card.offsetWidth;
                         card.classList.add('portfolio-fade-in');
@@ -604,7 +604,8 @@ window.selectContactService = function (serviceVal) {
             const filter = btn.dataset.filter;
 
             projectCards.forEach(card => {
-                const show = filter === 'all' || card.dataset.category === filter;
+                const cardCategories = (card.dataset.category || '').trim().split(/\s+/);
+                const show = filter === 'all' || cardCategories.includes(filter);
 
                 if (show) {
                     // First unhide, then animate in
