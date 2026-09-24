@@ -87,22 +87,24 @@ app.post('/api/contact', async (req, res) => {
         return res.status(400).json({ error: 'Name, email, phone, and message are required.' });
     }
 
-    // Smart validation: Real email domain & active telecom phone verification
-    const validation = await validateContactInquiry({ email, phone });
+    // Smart validation: Name, Real email domain/provider checks, telecom phone verification, and message quality
+    const validation = await validateContactInquiry({ name, email, phone, subject, message });
     if (!validation.isValid) {
         return res.status(400).json({ error: validation.error });
     }
 
+    const cleanName = validation.sanitizedName;
     const cleanEmail = validation.sanitizedEmail;
     const cleanPhone = validation.formattedPhone;
+    const cleanMessage = validation.sanitizedMessage;
 
     try {
         const sql = `INSERT INTO contacts (name, email, phone, subject, message) VALUES ($1, $2, $3, $4, $5) RETURNING id`;
-        const result = await pool.query(sql, [name, cleanEmail, cleanPhone, subject, message]);
+        const result = await pool.query(sql, [cleanName, cleanEmail, cleanPhone, subject, cleanMessage]);
         const newId = result.rows[0].id;
 
         // Send email alert to admin and thank-you confirmation to customer
-        await sendContactEmails({ name, email: cleanEmail, phone: cleanPhone, subject, message });
+        await sendContactEmails({ name: cleanName, email: cleanEmail, phone: cleanPhone, subject, message: cleanMessage });
 
         res.status(201).json({ message: 'Message sent successfully!', id: newId });
     } catch (err) {

@@ -490,6 +490,24 @@ document.addEventListener('DOMContentLoaded', () => {
             return null;
         }
 
+        function clientValidateName(nameStr) {
+            const clean = (nameStr || '').trim();
+            if (clean.length < 2) return 'Please enter your full name (at least 2 characters).';
+            if (/(.)\1{2,}/i.test(clean)) return 'Please enter a genuine name (repetitive letters detected).';
+            if (!/^[a-zA-Z\u00C0-\u024F\s.'-]+$/.test(clean)) return 'Name should contain letters only.';
+            return null;
+        }
+
+        function clientValidateMessage(msgStr, nameStr) {
+            const clean = (msgStr || '').trim();
+            if (clean.length < 10) return 'Please provide at least 10 characters describing your inquiry.';
+            if (clean.toLowerCase() === (nameStr || '').trim().toLowerCase()) return 'Please describe your inquiry in the message field.';
+            if (/(.)\1{3,}/i.test(clean)) return 'Please enter a genuine message without repeated characters.';
+            const words = clean.split(/\s+/).filter(w => w.length > 0);
+            if (words.length < 2) return 'Please describe your inquiry with at least 2 words.';
+            return null;
+        }
+
         function clientValidateEmail(emailStr) {
             const clean = (emailStr || '').trim().toLowerCase();
             const re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
@@ -499,6 +517,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const parts = clean.split('@');
             if (parts.length !== 2) return 'Invalid email structure.';
             const [user, domain] = parts;
+
+            // Universal minimum username length
+            if (user.length < 3) {
+                return `Email username "${user}" is too short (minimum 3 characters).`;
+            }
+
+            // Gmail requires 6-30 characters
+            if ((domain === 'gmail.com' || domain === 'googlemail.com') && (user.length < 6 || user.length > 30)) {
+                return `Gmail usernames must be between 6 and 30 characters long ("${user}@gmail.com" does not exist).`;
+            }
 
             if (clientDisposableDomains.has(domain)) {
                 return 'Disposable or temporary email services are not permitted.';
@@ -532,6 +560,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            // Client-side name check
+            const nameErr = clientValidateName(name);
+            if (nameErr) {
+                showToast('error', 'Invalid Name', nameErr);
+                nameInput.focus();
+                return;
+            }
+
             // Client-side phone check
             const phoneErr = clientValidatePhone(phone);
             if (phoneErr) {
@@ -545,6 +581,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (emailErr) {
                 showToast('error', 'Invalid Email', emailErr);
                 emailInput.focus();
+                return;
+            }
+
+            // Client-side message check
+            const msgErr = clientValidateMessage(message, name);
+            if (msgErr) {
+                showToast('error', 'Message Details', msgErr);
+                messageInput.focus();
                 return;
             }
 

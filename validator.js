@@ -110,7 +110,51 @@ function isRepetitivePattern(digits) {
 }
 
 /**
+ * Validates customer name against spam, keyboard mash, and repetitive characters.
+ */
+function validateName(name) {
+    if (!name || typeof name !== 'string' || name.trim().length < 2) {
+        return { isValid: false, error: 'Please enter your full name (at least 2 characters).' };
+    }
+    const clean = name.trim();
+    if (clean.length > 70) {
+        return { isValid: false, error: 'Name cannot exceed 70 characters.' };
+    }
+    // Check 3+ consecutive repeating characters (e.g. Najjj)
+    if (/(.)\1{2,}/i.test(clean)) {
+        return { isValid: false, error: 'Please enter a genuine name (repetitive letters detected).' };
+    }
+    // Must contain letters, spaces, hyphens, dots
+    if (!/^[a-zA-Z\u00C0-\u024F\s.'-]+$/.test(clean)) {
+        return { isValid: false, error: 'Name should contain letters only.' };
+    }
+    return { isValid: true, sanitizedName: clean };
+}
+
+/**
+ * Validates inquiry message content against dummy spam.
+ */
+function validateMessage(message, name) {
+    if (!message || typeof message !== 'string' || message.trim().length < 10) {
+        return { isValid: false, error: 'Please provide at least 10 characters describing your inquiry or project.' };
+    }
+    const clean = message.trim();
+    if (name && clean.toLowerCase() === name.trim().toLowerCase()) {
+        return { isValid: false, error: 'Please describe your project or inquiry in the message field.' };
+    }
+    if (/(.)\1{3,}/i.test(clean)) {
+        return { isValid: false, error: 'Please enter a genuine message without repeated characters.' };
+    }
+    const words = clean.split(/\s+/).filter(w => w.length > 0);
+    if (words.length < 2) {
+        return { isValid: false, error: 'Please provide a brief description of your inquiry (at least 2 words).' };
+    }
+    return { isValid: true, sanitizedMessage: clean };
+}
+
+/**
  * Validates whether an email address is real, authentic, not disposable,
+ * conforms to provider length constraints (like Gmail 6-30 chars),
  * and belongs to a domain with active mail exchange (MX) DNS records.
  *
  * @param {string} email
@@ -136,17 +180,78 @@ async function validateEmail(email) {
 
     const [userPart, domainPart] = parts;
 
-    // 2. Reject obvious dummy usernames or domains
+    // 2. Minimum length for ANY email username (prevents single-letter dummy emails like v@...)
+    if (userPart.length < 3) {
+        return {
+            isValid: false,
+            error: `Email username "${userPart}" is too short (minimum 3 characters required).`
+        };
+    }
+
+    // 3. Provider-Specific Rules:
+    // Gmail strictly enforces 6 to 30 characters (Google Account requirement)
+    if (domainPart === 'gmail.com' || domainPart === 'googlemail.com') {
+        if (userPart.length < 6 || userPart.length > 30) {
+            return {
+                isValid: false,
+                error: `Gmail usernames must be between 6 and 30 characters long ("${userPart}@gmail.com" does not exist).`
+            };
+        }
+        if (userPart.startsWith('.') || userPart.endsWith('.') || userPart.includes('..')) {
+            return {
+                isValid: false,
+                error: 'Gmail addresses cannot begin, end, or contain consecutive dots.'
+            };
+        }
+    }
+
+    // Yahoo requires 4 to 32 characters
+    if (domainPart.includes('yahoo.') || domainPart === 'ymail.com') {
+        if (userPart.length < 4 || userPart.length > 32) {
+            return {
+                isValid: false,
+                error: 'Yahoo email addresses must have a username between 4 and 32 characters.'
+            };
+        }
+    }
+
+    // Outlook / Hotmail / Live
+    if (domainPart === 'outlook.com' || domainPart === 'hotmail.com' || domainPart === 'live.com') {
+        if (userPart.length < 3) {
+            return {
+                isValid: false,
+                error: 'Outlook/Hotmail email addresses must have a username of at least 3 characters.'
+            };
+        }
+    }
+
+    // Zoho requires at least 6 characters
+    if (domainPart === 'zoho.com' && userPart.length < 6) {
+        return {
+            isValid: false,
+            error: 'Zoho email addresses must have a username of at least 6 characters.'
+        };
+    }
+
+    // 4. Reject repetitive characters in username (e.g. aaaa@..., jjj@...)
+    if (/(.)\1{3,}/.test(userPart)) {
+        return {
+            isValid: false,
+            error: 'Please enter a genuine, active email address (repetitive characters detected).'
+        };
+    }
+
+    // 5. Reject obvious dummy usernames or domains
     if (DUMMY_EMAIL_DOMAINS.has(domainPart) || (DUMMY_EMAIL_USERS.has(userPart) && (domainPart === 'gmail.com' || domainPart === 'yahoo.com' || domainPart.includes('test')))) {
         return { isValid: false, error: 'Test or dummy email addresses are not allowed. Please enter your real email.' };
     }
 
-    // 3. Reject known disposable / temporary email providers
+    // 6. Reject known disposable / temporary email providers
     if (DISPOSABLE_EMAIL_DOMAINS.has(domainPart)) {
         return { isValid: false, error: 'Temporary or disposable email services are not permitted. Please use your genuine email.' };
     }
 
-    // 4. DNS MX Record Lookup to verify the domain actually exists and accepts mail
+    // 7. DNS MX Record Lookup to verify the domain actually exists and accepts mail
     try {
         const timeoutPromise = new Promise((_, reject) =>
             setTimeout(() => reject(new Error('DNS_TIMEOUT')), 3500)
@@ -254,32 +359,48 @@ function validatePhoneNumber(phone, defaultCountry = 'IN') {
 }
 
 /**
- * Validates both email and phone number together.
+ * Validates full contact inquiry: Name, Email, Phone, and Message.
  *
- * @param {{ email: string, phone: string }} param0
- * @returns {Promise<{ isValid: boolean, error?: string, sanitizedEmail?: string, formattedPhone?: string }>}
+ * @param {{ name: string, email: string, phone: string, subject?: string, message: string }} param0
+ * @returns {Promise<{ isValid: boolean, error?: string, sanitizedName?: string, sanitizedEmail?: string, formattedPhone?: string, sanitizedMessage?: string }>}
  */
-async function validateContactInquiry({ email, phone }) {
-    // 1. Validate Phone
+async function validateContactInquiry({ name, email, phone, message }) {
+    // 1. Validate Name
+    const nameResult = validateName(name);
+    if (!nameResult.isValid) {
+        return { isValid: false, error: nameResult.error };
+    }
+
+    // 2. Validate Phone
     const phoneResult = validatePhoneNumber(phone, 'IN');
     if (!phoneResult.isValid) {
         return { isValid: false, error: phoneResult.error };
     }
 
-    // 2. Validate Email
+    // 3. Validate Email (including provider rules like Gmail 6-30 chars & DNS MX)
     const emailResult = await validateEmail(email);
     if (!emailResult.isValid) {
         return { isValid: false, error: emailResult.error };
     }
 
+    // 4. Validate Message
+    const msgResult = validateMessage(message, name);
+    if (!msgResult.isValid) {
+        return { isValid: false, error: msgResult.error };
+    }
+
     return {
         isValid: true,
+        sanitizedName: nameResult.sanitizedName,
         sanitizedEmail: emailResult.sanitizedEmail,
-        formattedPhone: phoneResult.formattedPhone
+        formattedPhone: phoneResult.formattedPhone,
+        sanitizedMessage: msgResult.sanitizedMessage
     };
 }
 
 module.exports = {
+    validateName,
+    validateMessage,
     validateEmail,
     validatePhoneNumber,
     validateContactInquiry
