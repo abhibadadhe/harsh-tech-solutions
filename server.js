@@ -4,6 +4,8 @@ const { Pool } = require('pg');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
+const { sendContactEmails } = require('./mailer');
+const { validateContactInquiry } = require('./validator');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -78,21 +80,35 @@ pool.query(`CREATE TABLE IF NOT EXISTS contacts (
     }
 });
 
-app.post('/api/contact', (req, res) => {
+app.post('/api/contact', async (req, res) => {
     const { name, email, phone, subject, message } = req.body;
 
     if (!name || !email || !phone || !message) {
         return res.status(400).json({ error: 'Name, email, phone, and message are required.' });
     }
 
-    const sql = `INSERT INTO contacts (name, email, phone, subject, message) VALUES ($1, $2, $3, $4, $5) RETURNING id`;
-    pool.query(sql, [name, email, phone, subject, message], (err, result) => {
-        if (err) {
-            console.error('Error inserting data:', err.stack);
-            return res.status(500).json({ error: 'Failed to save your message.' });
-        }
-        res.status(201).json({ message: 'Message sent successfully!', id: result.rows[0].id });
-    });
+    // Smart validation: Real email domain & active telecom phone verification
+    const validation = await validateContactInquiry({ email, phone });
+    if (!validation.isValid) {
+        return res.status(400).json({ error: validation.error });
+    }
+
+    const cleanEmail = validation.sanitizedEmail;
+    const cleanPhone = validation.formattedPhone;
+
+    try {
+        const sql = `INSERT INTO contacts (name, email, phone, subject, message) VALUES ($1, $2, $3, $4, $5) RETURNING id`;
+        const result = await pool.query(sql, [name, cleanEmail, cleanPhone, subject, message]);
+        const newId = result.rows[0].id;
+
+        // Send email alert to admin and thank-you confirmation to customer
+        await sendContactEmails({ name, email: cleanEmail, phone: cleanPhone, subject, message });
+
+        res.status(201).json({ message: 'Message sent successfully!', id: newId });
+    } catch (err) {
+        console.error('Error handling contact form submission:', err.stack || err.message);
+        res.status(500).json({ error: 'Failed to save your message.' });
+    }
 });
 
 // API Endpoint for Admin Panel to get all contacts

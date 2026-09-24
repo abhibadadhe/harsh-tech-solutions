@@ -454,30 +454,111 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (contactForm) {
+        // Disposable domain blocklist for instant client-side feedback
+        const clientDisposableDomains = new Set([
+            'mailinator.com', 'tempmail.com', 'temp-mail.org', 'guerrillamail.com',
+            '10minutemail.com', 'trashmail.com', 'yopmail.com', 'throwawaymail.com',
+            'dispostable.com', 'sharklasers.com', 'fakeinbox.com', 'generator.email'
+        ]);
+
+        const clientDummyUsers = new Set([
+            'test', 'tester', 'testing', 'fake', 'dummy', 'asdf', 'qwerty',
+            'admin', 'user', 'sample', 'abc', 'xyz', 'demo', 'none'
+        ]);
+
+        function clientValidatePhone(phoneStr) {
+            const digits = (phoneStr || '').replace(/\D/g, '');
+            if (digits.length < 8 || digits.length > 15) {
+                return 'Phone number must contain between 8 and 15 digits.';
+            }
+            if (digits.split('').every(d => d === digits[0])) {
+                return 'Please enter a genuine phone number (all identical digits detected).';
+            }
+            const seq = '01234567890123456789';
+            const revSeq = '98765432109876543210';
+            if (seq.includes(digits) || revSeq.includes(digits)) {
+                return 'Please enter a genuine phone number (sequential test digits not allowed).';
+            }
+            if (/(.)\1{4,}/.test(digits)) {
+                return 'Please enter a genuine, active phone number.';
+            }
+            if (!phoneStr.trim().startsWith('+') && digits.length === 10) {
+                if (!['6', '7', '8', '9'].includes(digits[0])) {
+                    return 'Indian mobile numbers must begin with 6, 7, 8, or 9.';
+                }
+            }
+            return null;
+        }
+
+        function clientValidateEmail(emailStr) {
+            const clean = (emailStr || '').trim().toLowerCase();
+            const re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+            if (!re.test(clean)) {
+                return 'Please enter a valid email format (e.g. name@domain.com).';
+            }
+            const parts = clean.split('@');
+            if (parts.length !== 2) return 'Invalid email structure.';
+            const [user, domain] = parts;
+
+            if (clientDisposableDomains.has(domain)) {
+                return 'Disposable or temporary email services are not permitted.';
+            }
+            if (clientDummyUsers.has(user) && (domain === 'gmail.com' || domain === 'yahoo.com' || domain.includes('test'))) {
+                return 'Test or dummy email addresses are not allowed. Please enter your real email.';
+            }
+            return null;
+        }
+
         contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
             const submitBtn = document.getElementById('contactSubmitBtn');
             const originalBtnText = submitBtn.innerHTML;
 
+            const nameInput = document.getElementById('contactName');
+            const emailInput = document.getElementById('contactEmail');
+            const phoneInput = document.getElementById('contactPhone');
+            const subjectInput = document.getElementById('contactSubject');
+            const messageInput = document.getElementById('contactMessage');
+
+            const name = nameInput.value.trim();
+            const email = emailInput.value.trim();
+            const phone = phoneInput.value.trim();
+            const subject = subjectInput.value;
+            const message = messageInput.value.trim();
+
+            if (!name || !email || !phone || !message) {
+                showToast('error', 'Required Fields', 'Please complete all required fields.');
+                return;
+            }
+
+            // Client-side phone check
+            const phoneErr = clientValidatePhone(phone);
+            if (phoneErr) {
+                showToast('error', 'Invalid Phone', phoneErr);
+                phoneInput.focus();
+                return;
+            }
+
+            // Client-side email check
+            const emailErr = clientValidateEmail(email);
+            if (emailErr) {
+                showToast('error', 'Invalid Email', emailErr);
+                emailInput.focus();
+                return;
+            }
+
             // UI Loading state
-            submitBtn.innerHTML = 'Sending... <i class="fa-solid fa-spinner fa-spin"></i>';
+            submitBtn.innerHTML = 'Verifying & Sending... <i class="fa-solid fa-spinner fa-spin"></i>';
             submitBtn.disabled = true;
 
-            // Gather data
-            const formData = {
-                name: document.getElementById('contactName').value,
-                email: document.getElementById('contactEmail').value,
-                phone: document.getElementById('contactPhone').value,
-                subject: document.getElementById('contactSubject').value,
-                message: document.getElementById('contactMessage').value
-            };
+            const formData = { name, email, phone, subject, message };
 
             try {
                 // Determine API base URL (in case user opens HTML file directly instead of through localhost)
                 const baseUrl = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
 
-                // Send to backend
+                // Send to backend (runs DNS MX validation and telecom plan checks)
                 const response = await fetch(`${baseUrl}/api/contact`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -487,13 +568,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
 
                 if (response.ok) {
-                    showToast('success', 'Awesome!', 'Your message has been sent. We will contact you shortly.');
+                    showToast('success', 'Inquiry Sent!', 'Thank you! We have verified your details and sent a confirmation to your email.');
                     contactForm.reset();
                 } else {
-                    throw new Error(data.error || 'Failed to send message');
+                    throw new Error(data.error || 'Failed to submit message.');
                 }
             } catch (error) {
-                showToast('error', 'Oops!', error.message);
+                showToast('error', 'Verification Notice', error.message);
+                const msgLower = (error.message || '').toLowerCase();
+                if (msgLower.includes('phone') || msgLower.includes('mobile') || msgLower.includes('digits')) {
+                    phoneInput.focus();
+                } else if (msgLower.includes('email') || msgLower.includes('domain')) {
+                    emailInput.focus();
+                }
             } finally {
                 // Reset button
                 submitBtn.innerHTML = originalBtnText;
